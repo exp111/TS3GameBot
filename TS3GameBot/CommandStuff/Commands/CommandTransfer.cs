@@ -59,9 +59,10 @@ namespace TS3GameBot.CommandStuff.Commands
 			DbInterface.AlterPoints(targets[0], +amount);
 			DbInterface.SaveChanges();
 
-			// TODO: Tell peepz their accounts have been temperatured with
+			CommandManager.AnswerCall(message, Utils.Utils.ApplyColor(Color.DarkGreen) + "\nTransfer done!\n" + CommandManager.ClientUrl(invoker.Id, invoker.Name) + ": " + invoker.Points + " Points\n" + CommandManager.ClientUrl(targets[0].Id, targets[0].Name) + ": " + targets[0].Points + " Points[/COLOR]");
+			return true;
 
-			return false;
+			// TODO: Tell peepz their accounts have been temperatured with
 		}
 	}
 }
