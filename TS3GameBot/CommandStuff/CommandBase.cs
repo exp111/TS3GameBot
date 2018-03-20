@@ -28,7 +28,7 @@ namespace TS3GameBot.CommandStuff
 			this.Description = description;
 		}
 
-		public  String GetUsage()
+		public String GetUsage()
 		{
 			return "\n[Usage]\n " + CommandManager.CmdIndicator + Label + " " + this.Usage;
 		}

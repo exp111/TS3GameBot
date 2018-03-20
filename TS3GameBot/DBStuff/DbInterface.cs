@@ -58,7 +58,7 @@ namespace TS3GameBot.DBStuff
 				return Error.SAVEERROR;
 			}
 
-			Console.WriteLine("{0} records saved to database", savedCount);
+			//Console.WriteLine("{0} records saved to database", savedCount);
 
 			return Error.OK;
 		}

@@ -42,7 +42,6 @@ namespace TS3GameBot.CommandStuff.Commands
 					break;
 			}
 			CommandManager.AnswerCall(message, outMessage.ToString());
-			Console.WriteLine(outMessage);
 
 			return false;
 		}

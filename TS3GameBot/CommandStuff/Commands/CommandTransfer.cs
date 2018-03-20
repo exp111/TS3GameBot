@@ -39,7 +39,13 @@ namespace TS3GameBot.CommandStuff.Commands
 			}
 
 			CasinoPlayer invoker = DbInterface.GetPlayer(message.InvokerUid);
-			List<CasinoPlayer> targets = DbInterface.GetPlayerList(name: args[0]);					
+			List<CasinoPlayer> targets = DbInterface.GetPlayerList(name: args[0]);	
+			
+			if(invoker == null)
+			{
+				CommandManager.AnswerCall(message, Responses.NotRegistered);
+				return false;
+			}
 
 			if(targets.Count != 1)
 			{

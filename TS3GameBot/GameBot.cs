@@ -35,9 +35,12 @@ namespace TS3GameBot
 			
 			await TSClient.Connect();
 			
-			await TSClient.Login(this.LoginName, this.LoginPass);
+			await TSClient.Login(this.LoginName, this.LoginPass);			
+		}
 
-			await TSClient.UseServer(1);
+		public async Task StartBot(int sid)
+		{
+			await TSClient.UseServer(sid);
 			await TSClient.ChangeNickName(this.Name);
 			Who = await TSClient.WhoAmI();
 
@@ -79,7 +82,6 @@ namespace TS3GameBot
 
 			if (shit == null)
 			{
-				Console.WriteLine("fuck");
 				return;
 			}
 
@@ -89,7 +91,6 @@ namespace TS3GameBot
 			{
 				dang.Append("\n" + item.NickName + ": " + item.Id);
 			}
-			Console.WriteLine(dang);
 		}
 
 	}

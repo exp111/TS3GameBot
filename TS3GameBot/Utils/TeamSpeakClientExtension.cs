@@ -14,11 +14,16 @@ namespace TS3GameBot.Utils
 		{
 			// messageadd cluid=oHhi9WzXLNEFQOwAu4JYKGU+C+c= subject=Hi! message=Where\aare\syou?!?
 			message = message ?? string.Empty;
-			return GameBot.Instance.TSClient.Client.
+			return tsclient.Client.
 				Send("messageadd",
 				new Parameter("cluid", uid),
 				new Parameter("subject", subject),
 				new Parameter("message", message));
+		}
+
+		public static Task Quit(this TeamSpeakClient tsclient)
+		{
+			return tsclient.Client.Send("quit");
 		}
     }
 }

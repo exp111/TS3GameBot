@@ -28,7 +28,6 @@ namespace TS3GameBot.CommandStuff.Commands
 			outMessage.Append("\n").
 				Append(CommandManager.ClientUrl(tempPlayer.Id, tempPlayer.Name) + ": You have " + tempPlayer.Points + " in your Wallet!");
 
-			Console.WriteLine(outMessage);
 			return CommandManager.AnswerCall(message, outMessage.ToString());
 		}
 	}

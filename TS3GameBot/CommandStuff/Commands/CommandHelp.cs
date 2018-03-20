@@ -25,7 +25,6 @@ namespace TS3GameBot.CommandStuff.Commands
 					{
 						outputMessage.Append(cmd.Value.GetUsage());
 						CommandManager.AnswerCall(message, outputMessage.ToString());
-						Console.WriteLine(outputMessage);
 						return true;
 					}
 				}
@@ -49,7 +48,6 @@ namespace TS3GameBot.CommandStuff.Commands
 
 				}
 				CommandManager.AnswerCall(message, outputMessage.ToString());
-				Console.WriteLine(outputMessage);
 				return true;
 			}
 

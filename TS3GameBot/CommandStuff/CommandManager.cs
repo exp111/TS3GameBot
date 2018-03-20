@@ -35,8 +35,7 @@ namespace TS3GameBot.CommandStuff
 		public static void ExecuteCommand(IReadOnlyCollection<TextMessage> data)
 		{
 			foreach (TextMessage msg in data) // Sry und so D:
-			{
-				
+			{				
 				if (!msg.Message.StartsWith(CmdIndicator) || msg.InvokerId == GameBot.Instance.Who.ClientId) // Checking if its a command or the bot himself
 				{
 					return; // Fricking off

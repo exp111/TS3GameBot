@@ -44,8 +44,7 @@ namespace TS3GameBot.CommandStuff.Commands
 			{
 				CommandManager.AnswerCall(message, "\nUnknown usage!\n" + this.Usage);
 			}
-
-			Console.WriteLine(outMessage);
+			
 			CommandManager.AnswerCall(message, outMessage.ToString());
 
 			return true;
