@@ -83,7 +83,7 @@ namespace TS3GameBot.CommandStuff
 			endMessage.Append("\n!!! MESSAGE DOES NOT FIT !!!");
 			if (message.Length >= 1024)
 			{
-				message = message.Substring(0, 1024 - message.Length) + endMessage;
+				message = message.Substring(0, 1024 - endMessage.Length) + endMessage;
 			}
 			if(message == null || message == "")
 			{

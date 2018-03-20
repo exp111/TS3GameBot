@@ -31,6 +31,9 @@ namespace TS3GameBot.CommandStuff.Commands
 				case Error.DUPLICATE:
 					outMessage.Append("Player already exists in the Database");
 					break;
+				case Error.INVALIDNAME:
+					outMessage.Append("Name already exists within the Database");
+					break;
 				case Error.SAVEERROR:
 					outMessage.Append("Player could not be saved to the Database!");
 					break;

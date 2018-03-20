@@ -72,5 +72,25 @@ namespace TS3GameBot
 			});
 		}
 
+		public void GetClientsOnline()
+		{
+			//var shit = await GameBot.Instance.TSClient.GetClients();
+			var shit = Program.CurrentClients;
+
+			if (shit == null)
+			{
+				Console.WriteLine("fuck");
+				return;
+			}
+
+			StringBuilder dang = new StringBuilder();
+
+			foreach (var item in shit)
+			{
+				dang.Append("\n" + item.NickName + ": " + item.Id);
+			}
+			Console.WriteLine(dang);
+		}
+
 	}
 }

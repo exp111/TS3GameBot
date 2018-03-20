@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using TeamSpeak3QueryApi.Net.Specialized;
 using TeamSpeak3QueryApi.Net.Specialized.Notifications;
 using TS3GameBot.DBStuff;
+using TS3GameBot.Utils;
 
 namespace TS3GameBot.CommandStuff.Commands
 {
@@ -59,10 +63,33 @@ namespace TS3GameBot.CommandStuff.Commands
 			DbInterface.AlterPoints(targets[0], +amount);
 			DbInterface.SaveChanges();
 
-			CommandManager.AnswerCall(message, Utils.Utils.ApplyColor(Color.DarkGreen) + "\nTransfer done!\n" + CommandManager.ClientUrl(invoker.Id, invoker.Name) + ": " + invoker.Points + " Points\n" + CommandManager.ClientUrl(targets[0].Id, targets[0].Name) + ": " + targets[0].Points + " Points[/COLOR]");
-			return true;
+			CommandManager.AnswerCall(message, Utils.Utils.ApplyColor(Color.DarkGreen) + "\nTransfer done![/COLOR]\n" + CommandManager.ClientUrl(invoker.Id, invoker.Name) + ": " + invoker.Points + " Points\n" + CommandManager.ClientUrl(targets[0].Id, targets[0].Name) + ": " + targets[0].Points + " Points");
 
-			// TODO: Tell peepz their accounts have been temperatured with
+			StringBuilder privateMessage = new StringBuilder();
+			privateMessage.Clear().
+				Append("\nYou send " + amount + " Points to " + CommandManager.ClientUrl(targets[0].Id, targets[0].Name) + "!").
+				Append("\nYou now have " + invoker.Points + " Points!");
+
+			GameBot.Instance.TSClient.SendMessage(privateMessage.ToString(), MessageTarget.Private, message.InvokerId);
+
+			privateMessage.Clear().
+				Append("You received " + amount + " Points from " + CommandManager.ClientUrl(invoker.Id, invoker.Name) + "!").
+				Append("\nYou now have " + targets[0].Points + " Points!");
+
+			var shit = Program.CurrentClients.Where(c => c.NickName == targets[0].Name);
+
+			if(shit == null || shit.Count() == 0)
+			{
+				GameBot.Instance.TSClient.SendOfflineMessage(targets[0].Id, privateMessage.ToString(), "You received Points!");
+
+				return false;
+			}
+
+			privateMessage.Insert(0, "\n");
+
+			GameBot.Instance.TSClient.SendMessage(privateMessage.ToString(), MessageTarget.Private, shit.FirstOrDefault().Id);
+
+			return true;
 		}
 	}
 }

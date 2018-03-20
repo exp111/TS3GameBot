@@ -12,7 +12,8 @@ namespace TS3GameBot.DBStuff
 		OK = 0,
 		DUPLICATE = 1,
 		SAVEERROR = 2,
-		READERROR = 3
+		READERROR = 3,
+		INVALIDNAME = 4
 	}
 
     class DbInterface
@@ -44,6 +45,10 @@ namespace TS3GameBot.DBStuff
 			if (IsAlive(tempPlayer).GetAwaiter().GetResult())
 			{
 				return Error.DUPLICATE;
+			}
+			if(db.Players.Where(p => p.Name.ToLower() == tempPlayer.Name.ToLower() ) == null)
+			{
+				return Error.INVALIDNAME;
 			}
 
 			db.Players.Add(tempPlayer);
@@ -82,7 +87,7 @@ namespace TS3GameBot.DBStuff
 			{
 				PersonDb db = PersonDb.Instance;
 
-				return db.Players.Where(p => p.Name.Contains(name)).ToList();
+				return db.Players.Where(p => p.Name.Equals(name)).ToList();
 			}
 		}
 
