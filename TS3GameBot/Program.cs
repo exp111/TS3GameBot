@@ -152,6 +152,7 @@ namespace TS3GameBot
 					{
 						Console.Beep();
 					}
+					myBot.TSClient.Quit();
 					break;
 
 				case Error.UNKNOWN:

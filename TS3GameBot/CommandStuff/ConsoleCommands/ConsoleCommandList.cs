@@ -37,8 +37,8 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 			int index = (endIndex - perPage);
 			index = index <= 0 ? 0 : index;
 
-			int playerCount = PersonDb.Instance.Players.Count();
-			int pageCount = (int)Math.Ceiling((double)(playerCount / perPage));
+			int playerCount = DbInterface.GetPlayerCount();
+			int pageCount = (int)Math.Ceiling((double)playerCount / perPage);
 			pageCount = pageCount == 0 ? 1 : pageCount;
 
 			if (page > pageCount)
