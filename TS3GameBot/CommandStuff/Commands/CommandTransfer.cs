@@ -65,7 +65,12 @@ namespace TS3GameBot.CommandStuff.Commands
 				return false;
 			}
 
-			DbInterface.AlterPoints(invoker, -amount);
+			if (!DbInterface.AlterPoints(invoker, -amount))
+			{
+				CommandManager.AnswerCall(message, "Shitty mcshitfuck");
+				throw new Exception("Shitty mcschit fuck again");
+				//return false;
+			}
 			DbInterface.AlterPoints(targets[0], +amount);
 			DbInterface.SaveChanges();
 

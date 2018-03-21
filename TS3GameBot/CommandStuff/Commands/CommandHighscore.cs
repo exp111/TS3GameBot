@@ -31,7 +31,7 @@ namespace TS3GameBot.CommandStuff.Commands
 			}
 			else if(args.Count == 1)
 			{
-				List<CasinoPlayer> playerList = DbInterface.GetPlayerList(args[0]).OrderByDescending(p => p.Points).ToList();
+				List<CasinoPlayer> playerList = DbInterface.GetPlayerList(name: args[0]).OrderByDescending(p => p.Points).ToList();
 
 				foreach (CasinoPlayer player in playerList)
 				{

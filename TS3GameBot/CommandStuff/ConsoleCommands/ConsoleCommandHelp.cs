@@ -12,8 +12,13 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 			this.Usage = "[command]";
 		}
 
-		public override bool Execute(List<string> args)
+		public override CCR Execute(List<string> args)
 		{
+			if(args.Count > 1)
+			{
+				return CCR.WRONGPARAM;
+			}
+
 			StringBuilder outputMessage = new StringBuilder();
 
 			if (args.Count != 0)
@@ -24,9 +29,10 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 					{
 						outputMessage.Append(cmd.Value.GetUsage() + "\n");
 						Console.Write(outputMessage.ToString());
-						return true;
+						return CCR.OK;
 					}
 				}
+				return CCR.INVALIDPARAM;
 			}
 			else
 			{
@@ -39,12 +45,8 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 
 				}
 				Console.Write(outputMessage.Append("\n").ToString());
-				return true;
+				return CCR.OK;
 			}
-
-
-
-			return false;
 		}
 	}
 }

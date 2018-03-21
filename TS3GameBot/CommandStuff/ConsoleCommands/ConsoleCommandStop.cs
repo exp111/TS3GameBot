@@ -13,11 +13,11 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 			this.Usage = "";
 		}
 
-		public override bool Execute(List<string> args)
+		public override CCR Execute(List<string> args)
 		{
 			Console.WriteLine("Stopping Bot");
 			Program.Running = false;
-			return true;
+			return CCR.OK;
 		}
 	}
 }

@@ -14,14 +14,13 @@ namespace TS3GameBot.CommandStuff
 		{
 			RegisterCommand(new ConsoleCommandStop("stop", "Stop the Bot"));
 			RegisterCommand(new ConsoleCommandHelp("help", "Displays a List of commands / Displays usage of given Command"));
+			RegisterCommand(new ConsoleCommandPoints("points", "Edits the Points of a given Player"));
+			RegisterCommand(new ConsoleCommandList("list", "List all registered Players"));
+			RegisterCommand(new ConsoleCommandClear("clear", "Clears the Console Window"));
 		}
 		private static void RegisterCommand(ConsoleCommandBase command)
 		{
 			Commands.Add(command.Label.ToLower(), command);
-		}
-
-		public static void ExecuteCommand()
-		{
 		}
 	}
 }

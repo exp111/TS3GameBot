@@ -63,22 +63,27 @@ namespace TS3GameBot.DBStuff
 			return Error.OK;
 		}
 
-		public static CasinoPlayer GetPlayer(String uid)
+		public static CasinoPlayer GetPlayer(String uid) 
 		{
 			PersonDb db = PersonDb.Instance;
 			return db.Players.Find(uid);
+			// TODO: Catch "MySql.Data.MySqlClient.MySqlException" and make it known in shit'n'stuff
 		}
 
-		public static List<CasinoPlayer> GetPlayerList(String name = "N/A")
+		public static List<CasinoPlayer> GetPlayerList(int index = 0, int endIndex = 0, String name = "N/A")
 		{
 			List<CasinoPlayer> playerList = new List<CasinoPlayer>();
 			if (name == "N/A")
 			{
 				PersonDb db = PersonDb.Instance;
 
-				foreach (CasinoPlayer player in db.Players)
+				List<CasinoPlayer> shittyList = db.Players.ToList().OrderByDescending(p => p.Points).ToList();
+
+				endIndex = endIndex > db.Players.Count() - 1 ? db.Players.Count() : endIndex;
+
+				for (int i = index; i < (endIndex >= 1 ? endIndex : db.Players.Count()); i++)
 				{
-					playerList.Add(player);
+					playerList.Add(shittyList[i]);
 				}
 
 				return playerList;
@@ -117,11 +122,24 @@ namespace TS3GameBot.DBStuff
 
 		public static bool AlterPoints(CasinoPlayer player, int amount)
 		{
-			PersonDb db = PersonDb.Instance;
-			db.Players.Find(player.Id).Points += amount;
+			if (player.Points + amount < 0)
+			{
+				return false;
+			}
+
+			player.Points += amount;
 
 			return true;
+		}
 
+		public static bool SetPoints(CasinoPlayer player, int amount)
+		{
+			if(amount < 0)
+			{
+				return false;
+			}
+			player.Points = amount;
+			return true;
 		}
 	}
 }
