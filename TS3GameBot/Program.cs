@@ -31,6 +31,8 @@ namespace TS3GameBot
 
 			ConsoleCommandManager.RegisterCommands();
 
+			Console.WriteLine("Connecting to Database..."); 
+			Console.WriteLine(DbInterface.GetPlayerCount() + " Players found!");// Making an Initial DB call, to get rid of the Delay on the first Commnand
 
 			Thread botThread = new Thread(RunBot);
 			botThread.Start(1);
