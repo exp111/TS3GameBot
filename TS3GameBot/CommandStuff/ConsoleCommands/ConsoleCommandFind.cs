@@ -37,8 +37,8 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 			StringBuilder outMessage = new StringBuilder();
 
 			outMessage.
-				AppendFormat("{0, -15} | {1, -15} | {2, -28} | {3, -15}\n", "Name", "Points", "uid", "SteamID64").
-				AppendFormat("{0, -15} | {0, -15} | {0, -28} | {0, -15}\n", "");
+				AppendFormat("{0, -15} | {1, -15} | {2, -28} | {3, -15}\n", "Name", "Points", "uid", "SteamID64");
+				//AppendFormat("{0, -15} | {0, -15} | {0, -28} | {0, -15}\n", "");
 
 			foreach (CasinoPlayer player in playerList)
 			{			
