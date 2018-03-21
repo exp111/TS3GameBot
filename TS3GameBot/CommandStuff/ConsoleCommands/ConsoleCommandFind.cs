@@ -28,9 +28,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 			}
 			else
 			{
-				// TODO: Add a method to severell players (contains)
-
-				playerList.Add(DbInterface.GetPlayerList(name: args[0]).FirstOrDefault());
+				playerList = DbInterface.GetPlayerList(name: args[0], fuzzy: true);
 			}
 			if (playerList.Count == 0 || playerList[0] == null)
 			{

@@ -84,7 +84,7 @@ namespace TS3GameBot.DBStuff
 			}
 		}
 
-		public static List<CasinoPlayer> GetPlayerList(int index = 0, int endIndex = 0, String name = "N/A")
+		public static List<CasinoPlayer> GetPlayerList(int index = 0, int endIndex = 0, String name = "N/A", bool fuzzy = false)
 		{
 			using (PersonDb db = new PersonDb())
 			{
@@ -104,9 +104,13 @@ namespace TS3GameBot.DBStuff
 
 					return playerList;
 				}
-				else
+				else if(!fuzzy)
 				{
 					return db.Players.Where(p => p.Name.Equals(name)).ToList();
+				}
+				else
+				{
+					return db.Players.Where(p => p.Name.Contains(name)).ToList();
 				}
 			}
 		}
