@@ -17,6 +17,7 @@ namespace TS3GameBot.CommandStuff
 			RegisterCommand(new ConsoleCommandPoints("points", "Edits the Points of a given Player"));
 			RegisterCommand(new ConsoleCommandList("list", "List all registered Players"));
 			RegisterCommand(new ConsoleCommandClear("clear", "Clears the Console Window"));
+			RegisterCommand(new ConsoleCommandFind("find", "Finds a given Player"));
 		}
 		private static void RegisterCommand(ConsoleCommandBase command)
 		{
