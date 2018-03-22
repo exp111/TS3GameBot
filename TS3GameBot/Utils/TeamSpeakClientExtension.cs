@@ -11,8 +11,7 @@ namespace TS3GameBot.Utils
     {
 
 		public static Task SendOfflineMessage(this TeamSpeakClient tsclient , String uid, String message, String subject = "Message from GameBot")
-		{
-			// messageadd cluid=oHhi9WzXLNEFQOwAu4JYKGU+C+c= subject=Hi! message=Where\aare\syou?!?
+		
 			message = message ?? string.Empty;
 			return tsclient.Client.
 				Send("messageadd",
