@@ -16,16 +16,15 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 
 		public override CCR Execute(List<string> args)
 		{
-			// TODO: Comments -.-
 			int page = 1;
 			int perPage = 10;
-			if (args.Count != 0)
+			if (args.Count != 0) //We have parameter
 			{
-				if (!Int32.TryParse(args[0], out perPage))
+				if (!Int32.TryParse(args[0], out perPage)) //Parameter 1 (playersperpage) NaN => return
 				{
 					return CCR.NOTANUMBER;
 				}
-				if (!Int32.TryParse((args.Count == 2 ? args[1] : "1"), out page))
+				if (!Int32.TryParse((args.Count == 2 ? args[1] : "1"), out page)) //Parameter 2 (page) NaN =>return
 				{
 					return CCR.NOTANUMBER;
 				}
@@ -33,6 +32,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 
 			StringBuilder outMessage = new StringBuilder();
 
+			//Calculate the index, endindex & page count
 			int endIndex = (page * perPage);
 			int index = (endIndex - perPage);
 			index = index <= 0 ? 0 : index;
@@ -41,7 +41,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 			int pageCount = (int)Math.Ceiling((double)playerCount / perPage);
 			pageCount = pageCount == 0 ? 1 : pageCount;
 
-			if (page > pageCount)
+			if (page > pageCount) //Page is higher than the max page count
 			{
 				outMessage.Append("There are only " + pageCount + " pages!");
 			}
