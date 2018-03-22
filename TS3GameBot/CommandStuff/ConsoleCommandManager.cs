@@ -18,6 +18,7 @@ namespace TS3GameBot.CommandStuff
 			RegisterCommand(new ConsoleCommandList("list", "List all registered Players"));
 			RegisterCommand(new ConsoleCommandClear("clear", "Clears the Console Window"));
 			RegisterCommand(new ConsoleCommandFind("find", "Finds a given Player"));
+			RegisterCommand(new ConsoleCommandTS3("ts3", "lists all Online users on the TS3"));
 		}
 		private static void RegisterCommand(ConsoleCommandBase command)
 		{
