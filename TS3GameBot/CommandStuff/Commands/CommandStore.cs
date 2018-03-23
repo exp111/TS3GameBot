@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using TeamSpeak3QueryApi.Net.Specialized.Notifications;
 using TS3GameBot.DBStuff;
@@ -45,46 +46,61 @@ namespace TS3GameBot.CommandStuff.Commands
 
 			if (args[0].ToLower() == "buy") //buy item
 			{
-				if (args.Count == 2) //if we have no item to buy -> show list
+				if (args.Count == 2 && GetItem(args[1]) != null) //if we have no item to buy -> show list
 				{
 					//Get Invoker
 					CasinoPlayer invoker = DbInterface.GetPlayer(message.InvokerUid);
 
-					/*if (invoker.Points < amount) //Not enough points
+					Item item = GetItem(args[1]);
+					if (invoker.Points < item.Price) //Not enough points
 					{
 						CommandManager.AnswerCall(message, Utils.Utils.ApplyColor(Color.Red) + "\nNot enough Points in your Wallet![S](get fucked)[/S][/COLOR]");
 						return false;
 					}
 
 					//Change the points nauw
-					if (!DbInterface.AlterPoints(invoker, -amount)) //Can't change points for some reason
+					if (!DbInterface.AlterPoints(invoker, -item.Price)) //Can't change points for some reason
 					{
 						CommandManager.AnswerCall(message, "Shitty mcshitfuck");
 						throw new Exception("Shitty mcschit fuck again");
-						//return false;
 					}
-					DbInterface.AlterPoints(targets[0], +amount);
 					DbInterface.SaveChanges();
 					
 					//Tell the peepz about their item
-					CommandManager.AnswerCall(message, Utils.Utils.ApplyColor(Color.DarkGreen) + "\nTransfer done![/COLOR]\n" + CommandManager.ClientUrl(invoker.Id, invoker.Name) + ": " + invoker.Points + " Points\n" + CommandManager.ClientUrl(targets[0].Id, targets[0].Name) + ": " + targets[0].Points + " Points");
-					*/
+					CommandManager.AnswerCall(message, Utils.Utils.ApplyColor(Color.DarkGreen) + "\nYou've bought " + item.Name + " for " + item.Price + " Points![/COLOR]\nYou now have " + invoker.Points + " Points");
+					return true;
 				}
 			}
 
 			if (args[0].ToLower() == "list") //List items
 			{
 				//List
-				outMessage.AppendFormat("{0, -15} | {1, -15}\n", "Name", "Price");
-				foreach (var item in items)
+				if (args.Count == 2 && GetItem(args[1]) != null) //if we have a item show more information about it else list items
 				{
-					outMessage.AppendFormat("{0, -15} | {1, -15}\n", item.Name, item.Price);
+					Item item = GetItem(args[1]);
+					if (item != null)
+					{
+						outMessage.Append(item.Name + " | " + item.Description + " | " + item.Price + " Points");
+					}
+				}
+				else
+				{
+					outMessage.AppendFormat("{0, -15} | {1, -15}\n", "Name", "Price");
+					foreach (var item in items)
+					{
+						outMessage.AppendFormat("{0, -15} | {1, -15}\n", item.Name, item.Price);
+					}
 				}
 				CommandManager.AnswerCall(message, outMessage);
 				return true;
 			}
 
 			return true;
+		}
+
+		private Item GetItem(string Name)
+		{
+			return items.Find(i => i.Equals(Name));
 		}
 	}
 }
