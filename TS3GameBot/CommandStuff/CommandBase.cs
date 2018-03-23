@@ -22,6 +22,8 @@ namespace TS3GameBot.CommandStuff
 
 		public bool Restricted { get; set; } = false;
 
+		public bool NeedsRegister { get; set; } = false;
+
 		public CommandBase(String label, String description)
 		{
 			Label = label;

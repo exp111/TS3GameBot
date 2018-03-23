@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TeamSpeak3QueryApi.Net.Specialized.Notifications;
 using TS3GameBot.CommandStuff.Commands;
+using TS3GameBot.DBStuff;
 
 namespace TS3GameBot.CommandStuff
 {
@@ -69,6 +70,16 @@ namespace TS3GameBot.CommandStuff
 				{
 					AnswerCall(msg, "\nThis Command is currently disabled!");
 					return;
+				}
+
+				if (cmd.NeedsRegister)
+				{
+					CasinoPlayer dbPlayer = DbInterface.GetPlayer(msg.InvokerId);
+					if (dbPlayer == null)
+					{
+						AnswerCall(msg, Responses.NotRegistered);
+						return;
+					}
 				}
 
 				cmd.Execute(args, msg);

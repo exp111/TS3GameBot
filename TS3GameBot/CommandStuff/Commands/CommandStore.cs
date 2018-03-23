@@ -28,12 +28,6 @@ namespace TS3GameBot.CommandStuff.Commands
 					//Get Invoker
 					CasinoPlayer invoker = DbInterface.GetPlayer(message.InvokerUid);
 
-					if (invoker == null) //Invoker not registered => tell 'em boi
-					{
-						CommandManager.AnswerCall(message, Responses.NotRegistered);
-						return false;
-					}
-
 					/*if (invoker.Points < amount) //Not enough points
 					{
 						CommandManager.AnswerCall(message, Utils.Utils.ApplyColor(Color.Red) + "\nNot enough Points in your Wallet![S](get fucked)[/S][/COLOR]");
