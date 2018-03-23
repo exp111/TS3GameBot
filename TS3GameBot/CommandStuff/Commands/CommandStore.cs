@@ -11,6 +11,7 @@ namespace TS3GameBot.CommandStuff.Commands
 		public CommandStore(string label, string description) : base(label, description)
 		{
 			this.Usage = "<list | buy> [item]";
+			this.NeedsRegister = true;
 		}
 
 		public override bool Execute(List<string> args, TextMessage message)
