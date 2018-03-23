@@ -11,7 +11,7 @@ namespace TS3GameBot.DBStuff
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseMySql(@"Server=localhost;Database=csharp;User=csharp;Password=csharp");
+			optionsBuilder.UseMySql(@"Server=localhost;Database=" + Program.MyCreds.DBName + ";User=" + Program.MyCreds.DBUser + ";Password=" + Program.MyCreds.DBPass);
 		}
 
 		public PersonDb() { }

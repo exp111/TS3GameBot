@@ -12,6 +12,7 @@ using TS3GameBot.CommandStuff;
 using TS3GameBot.CommandStuff.Commands;
 using TS3GameBot.DBStuff;
 using TS3GameBot.Utils;
+using Newtonsoft.Json;
 
 namespace TS3GameBot
 {
@@ -23,17 +24,38 @@ namespace TS3GameBot
 
 		public static bool Running = true;
 
+		private static String CredPathBin { get; } = "Credentials.bin";
+
+		private static String CredPathJson { get; } = "Credentials.json";
+
+		public static Creds MyCreds { get; private set; }
+
 		static void Main(string[] args)
 		{
 			Console.Title = "Shit 2k18";
 			Console.BackgroundColor = ConsoleColor.Black;
 			Console.ForegroundColor = ConsoleColor.Green;
 
-			ConsoleCommandManager.RegisterCommands();
+			if (!CredManager.CredCheck(CredPathBin))
+			{
+				MyCreds = CredManager.CreateCreds();
+				BinarySerialization.WriteToBinaryFile<Creds>(CredPathBin, MyCreds);
+				JsonSerialization.WriteToJsonFile<Creds>(CredPathJson, MyCreds);
+			}
+			else
+			{
+				MyCreds = BinarySerialization.ReadFromBinaryFile<Creds>(CredPathBin);
+				if(MyCreds == null)
+				{
+					throw new Exception("shit");
+				}
+			}
 
+			Console.Clear();
 			Console.WriteLine("Connecting to Database..."); 
 			Console.WriteLine(DbInterface.GetPlayerCount() + " Players found!");// Making an Initial DB call, to get rid of the Delay on the first Commnand
 
+			ConsoleCommandManager.RegisterCommands();
 			Thread botThread = new Thread(RunBot);
 			botThread.Start(1);
 
@@ -109,7 +131,7 @@ namespace TS3GameBot
 		{
 			GameBot myBot = GameBot.Instance;
 
-			myBot.Login().Wait();
+			myBot.Login(MyCreds.TS3User, MyCreds.TS3Pass).Wait();
 			myBot.StartBot((int)sid).Wait();
 
 			myBot.EventShit();
