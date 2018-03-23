@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TeamSpeak3QueryApi.Net.Specialized.Notifications;
 using TS3GameBot.DBStuff;
 
 namespace TS3GameBot.CommandStuff.Commands
