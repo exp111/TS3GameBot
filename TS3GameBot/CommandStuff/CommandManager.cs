@@ -25,6 +25,7 @@ namespace TS3GameBot.CommandStuff
 			RegisterCommand(new CommandDaily("daily", "Get your frickinnn Daily reeeeeword"));
 			RegisterCommand(new CommandWallet("wallet", "Get the amount of cash you have"));
 			RegisterCommand(new CommandTransfer("transfer", "Transfer your money 2 peepz"));
+			RegisterCommand(new CommandSpin("spin", "Get your game on"));
 		}
 
 		private static void RegisterCommand(CommandBase command)
