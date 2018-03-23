@@ -51,7 +51,7 @@ namespace TS3GameBot.CommandStuff.Commands
 			int price = 0;
 
 			//Create Message
-			outMessage.Append(CommandManager.ClientUrl(myPlayer.Id, myPlayer.Name) + " has paid " + this.Cost + " to spin the Slot Machine!");
+			outMessage.Append(CommandManager.ClientUrl(myPlayer.Id, myPlayer.Name) + " has paid " + this.Cost + " to spin the Slot Machine!\n");
 			outMessage.Append("#############\n");
 			outMessage.Append("# " + firstNum + " | " + secondNum + " | " + thirdNum + " #\n");
 			outMessage.Append("#############\n");
