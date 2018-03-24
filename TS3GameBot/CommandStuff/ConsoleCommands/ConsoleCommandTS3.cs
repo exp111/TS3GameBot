@@ -15,7 +15,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 			this.Usage = "[Users per Page] [Page]";
 		}
 
-		public override CCR Execute(List<string> args)
+		internal override CCR Execute(List<string> args, PersonDb db)
 		{
 			int page = 1;
 			int perPage = 10;

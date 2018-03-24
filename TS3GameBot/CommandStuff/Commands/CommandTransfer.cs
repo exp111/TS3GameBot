@@ -18,13 +18,14 @@ namespace TS3GameBot.CommandStuff.Commands
 			this.Usage = "<target> <amount>";
 		}
 
-		public override bool Execute(List<string> args, TextMessage message)
+		internal override bool Execute(List<string> args, TextMessage message, PersonDb db)
 		{
 			if(args.Count < 2) //Not enough parameters => Show Usage
 			{
 				CommandManager.AnswerCall(message, "\nUsage:\n" + CommandManager.CmdIndicator + this.Label + " " + this.Usage);
 				return false;
 			}
+
 			if (!Int32.TryParse(args[1], out int amount)) //Can't parse number => NaN
 			{
 				CommandManager.AnswerCall(message, Utils.Utils.ApplyColor(Color.Red) + "\n" + args[1] + " is not a number![/COLOR]");
@@ -37,7 +38,7 @@ namespace TS3GameBot.CommandStuff.Commands
 			}
 
 			//Get Invoker & Target Player
-			CasinoPlayer invoker = DbInterface.GetPlayer(message.InvokerUid);
+			CasinoPlayer invoker = DbInterface.GetPlayer(message.InvokerUid, db);
 			List<CasinoPlayer> targets = DbInterface.GetPlayerList(name: args[0]);	
 			
 			if(invoker == null) //Invoker not registered => tell 'em boi
@@ -65,17 +66,13 @@ namespace TS3GameBot.CommandStuff.Commands
 			}
 
 			//Change the points nauw
-			if (!DbInterface.AlterPoints(invoker, -amount)) //Can't change points for some reason
-			{
-				CommandManager.AnswerCall(message, "Shitty mcshitfuck");
-				throw new Exception("Shitty mcschit fuck again");
-				//return false;
-			}
-			DbInterface.AlterPoints(targets[0], +amount);
-			DbInterface.SaveChanges();
+			db.Players.Find(invoker.Id).Points -= amount;
+			db.Players.Find(targets[0].Id).Points += amount;
+
+			DbInterface.SaveChanges(db);
 
 			//Tell the peepz about the transfer
-			CommandManager.AnswerCall(message, Utils.Utils.ApplyColor(Color.DarkGreen) + "\nTransfer done![/COLOR]\n" + CommandManager.ClientUrl(invoker.Id, invoker.Name) + ": " + invoker.Points + " Points\n" + CommandManager.ClientUrl(targets[0].Id, targets[0].Name) + ": " + targets[0].Points + " Points");
+			CommandManager.AnswerCall(message, Utils.Utils.ApplyColor(Color.DarkGreen) + "\nTransfer done![/COLOR]\n" + CommandManager.ClientUrl(invoker.Id, invoker.Name) + ": " + invoker.Points + " Points\n" + CommandManager.ClientUrl(targets[0].Id, targets[0].Name) + ": " + db.Players.Find(targets[0].Id).Points + " Points");
 
 			//Private messages
 			StringBuilder privateMessage = new StringBuilder();

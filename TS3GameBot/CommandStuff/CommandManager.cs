@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TeamSpeak3QueryApi.Net.Specialized.Notifications;
 using TS3GameBot.CommandStuff.Commands;
+using TS3GameBot.DBStuff;
 
 namespace TS3GameBot.CommandStuff
 {
@@ -70,7 +71,11 @@ namespace TS3GameBot.CommandStuff
 					return;
 				}
 
-				cmd.Execute(args, msg);
+				using (PersonDb db = new PersonDb())
+				{
+					cmd.Execute(args, msg, db);
+				}
+				
 
 			}
 		}

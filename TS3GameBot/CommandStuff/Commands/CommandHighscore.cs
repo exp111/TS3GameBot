@@ -14,7 +14,7 @@ namespace TS3GameBot.CommandStuff.Commands
 			this.Usage = "[ Name ]";
 		}
 
-		public override bool Execute(List<string> args, TextMessage message)
+		internal override bool Execute(List<string> args, TextMessage message, PersonDb db)
 		{
 			StringBuilder outMessage = new StringBuilder();
 			int i = 1;

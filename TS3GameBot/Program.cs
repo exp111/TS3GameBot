@@ -78,11 +78,10 @@ namespace TS3GameBot
 				try
 				{
 					cmd = ConsoleCommandManager.Commands[parts[0].ToLower()]; // Getting the Command Assoscccscsiated to the give Command			
-
-					CCR result = cmd.Execute(commandArgs);
+					
+					CCR result = ConsoleCommandManager.ExecuteCommand(cmd, commandArgs);					
 					switch (result)
-					{
-						
+					{						
 						case CCR.OK:
 							break;
 						case CCR.WRONGPARAM:

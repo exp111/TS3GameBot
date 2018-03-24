@@ -22,57 +22,47 @@ namespace TS3GameBot.DBStuff
 
 		private DbInterface() { }
 
-		public static Error UpdateDaily(String uid, int amount)
+		public static Error UpdateDaily(String uid, int amount, PersonDb db)
 		{
-			using (PersonDb db = new PersonDb())
+			db.Players.Find(uid).Points += amount;
+			db.Players.Find(uid).LastDaily = DateTime.Now;
+
+			if (db.SaveChanges() < 1)
 			{
-				db.Players.Find(uid).Points += amount;
-				db.Players.Find(uid).LastDaily = DateTime.Now;
+				return Error.SAVEERROR;
+			}
 
-				if (db.SaveChanges() < 1)
-				{
-					return Error.SAVEERROR;
-				}
-
-				return Error.OK;
-			}		
-			
+			return Error.OK;			
 		}
 
-		public static Error AddPlayer(String uid, String name, String steamID = "", int points = 0)
+		public static Error AddPlayer(String uid, String name, PersonDb db, String steamID = "", int points = 0)
 		{
-			using (PersonDb db = new PersonDb())
+			CasinoPlayer tempPlayer = new CasinoPlayer { Id = uid, Name = name, Points = points, SteamID64 = steamID };
+
+			if (IsAlive(tempPlayer).GetAwaiter().GetResult())
 			{
-				CasinoPlayer tempPlayer = new CasinoPlayer { Id = uid, Name = name, Points = points, SteamID64 = steamID };
-
-				if (IsAlive(tempPlayer).GetAwaiter().GetResult())
-				{
-					return Error.DUPLICATE;
-				}
-				if (db.Players.Where(p => p.Name.ToLower() == tempPlayer.Name.ToLower()) == null)
-				{
-					return Error.INVALIDNAME;
-				}
-
-				db.Players.Add(tempPlayer);
-				int savedCount = db.SaveChanges();
-				if (savedCount < 1)
-				{
-					return Error.SAVEERROR;
-				}
-
-				//Console.WriteLine("{0} records saved to database", savedCount);
-
-				return Error.OK;
+				return Error.DUPLICATE;
 			}
+			if (db.Players.Where(p => p.Name.ToLower() == tempPlayer.Name.ToLower()) == null)
+			{
+				return Error.INVALIDNAME;
+			}
+
+			db.Players.Add(tempPlayer);
+			int savedCount = db.SaveChanges();
+			if (savedCount < 1)
+			{
+				return Error.SAVEERROR;
+			}
+
+			//Console.WriteLine("{0} records saved to database", savedCount);
+
+			return Error.OK;
 		}
 
-		public static CasinoPlayer GetPlayer(String uid) 
+		public static CasinoPlayer GetPlayer(String uid, PersonDb db) 
 		{
-			using (PersonDb db = new PersonDb())
-			{
-				return db.Players.Find(uid);
-			}
+			return db.Players.Find(uid);
 				// TODO: Catch "MySql.Data.MySqlClient.MySqlException" and make it known in shit'n'stuff
 		}
 
@@ -81,7 +71,7 @@ namespace TS3GameBot.DBStuff
 			using (PersonDb db = new PersonDb())
 			{
 				return db.Players.Count();
-			}
+			}			
 		}
 
 		public static List<CasinoPlayer> GetPlayerList(int index = 0, int endIndex = 0, String name = "N/A", bool fuzzy = false)
@@ -143,6 +133,15 @@ namespace TS3GameBot.DBStuff
 			}
 		}
 
+		public static Error SaveChanges(PersonDb db)
+		{
+			if (db.SaveChanges() < 1)
+			{
+				return Error.SAVEERROR;
+			}
+			return Error.OK;
+		}
+
 		public static bool AlterPoints(CasinoPlayer player, int amount)
 		{
 			if (player.Points + amount < 0)
@@ -155,12 +154,13 @@ namespace TS3GameBot.DBStuff
 			return true;
 		}
 
-		public static bool SetPoints(CasinoPlayer player, int amount)
+		public static bool SetPoints(CasinoPlayer player, int amount, PersonDb db)
 		{
-			if(amount < 0)
+			if (amount < 0)
 			{
 				return false;
 			}
+			//db.Players.Find(player.Id).Points = amount;
 			player.Points = amount;
 			return true;
 		}

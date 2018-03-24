@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TeamSpeak3QueryApi.Net.Specialized.Notifications;
 using TeamSpeak3QueryApi.Net.Specialized.Responses;
+using TS3GameBot.DBStuff;
 
 namespace TS3GameBot.CommandStuff
 {
@@ -33,7 +34,7 @@ namespace TS3GameBot.CommandStuff
 			return "\n[Usage]\n " + CommandManager.CmdIndicator + Label + " " + this.Usage;
 		}
 
-		public abstract bool Execute(List<String> args, TextMessage message);
-
+		//public abstract bool Execute(List<String> args, TextMessage message);
+		internal abstract bool Execute(List<string> args, TextMessage msg, PersonDb db);
 	}
 }

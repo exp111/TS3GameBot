@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TS3GameBot.CommandStuff.Commands;
 using TS3GameBot.CommandStuff.ConsoleCommands;
+using TS3GameBot.DBStuff;
 
 namespace TS3GameBot.CommandStuff
 {
@@ -23,6 +24,14 @@ namespace TS3GameBot.CommandStuff
 		private static void RegisterCommand(ConsoleCommandBase command)
 		{
 			Commands.Add(command.Label.ToLower(), command);
+		}
+
+		internal static CCR ExecuteCommand(ConsoleCommandBase cmd, List<String> args)
+		{
+			using (PersonDb db = new PersonDb())
+			{
+				return cmd.Execute(args, db);
+			}			
 		}
 	}
 }

@@ -13,7 +13,7 @@ namespace TS3GameBot.CommandStuff.Commands
 			this.Usage = "<list | buy> [item]";
 		}
 
-		public override bool Execute(List<string> args, TextMessage message)
+		internal override bool Execute(List<string> args, TextMessage message, PersonDb db)
 		{
 			if (args.Count < 1) //Not enough parameters => Show Usage
 			{
@@ -26,7 +26,7 @@ namespace TS3GameBot.CommandStuff.Commands
 				if (args.Count == 2) //if we have no item to buy -> show list
 				{
 					//Get Invoker
-					CasinoPlayer invoker = DbInterface.GetPlayer(message.InvokerUid);
+					CasinoPlayer invoker = DbInterface.GetPlayer(message.InvokerUid, db);
 
 					if (invoker == null) //Invoker not registered => tell 'em boi
 					{

@@ -16,9 +16,9 @@ namespace TS3GameBot.CommandStuff.Commands
 			this.Usage = "";
 		}
 
-		public override bool Execute(List<string> args, TextMessage message)
+		internal override bool Execute(List<string> args, TextMessage message, PersonDb db)
 		{
-			CasinoPlayer myPlayer = DbInterface.GetPlayer(message.InvokerUid);
+			CasinoPlayer myPlayer = DbInterface.GetPlayer(message.InvokerUid, db);
 			StringBuilder outMessage = new StringBuilder();
 
 			outMessage.Append("\n");
@@ -30,7 +30,7 @@ namespace TS3GameBot.CommandStuff.Commands
 					myPlayer.LastDaily.Month < DateTime.Now.Month ||
 					myPlayer.LastDaily.Day < DateTime.Now.Day)
 				{
-					Error result = DbInterface.UpdateDaily(myPlayer.Id, this.DailyReward);
+					Error result = DbInterface.UpdateDaily(myPlayer.Id, this.DailyReward, db);
 					switch (result)
 					{
 						case Error.OK:

@@ -13,10 +13,10 @@ namespace TS3GameBot.CommandStuff.Commands
 			this.Usage = "[ SteamID64 ]";
 		}
 
-		public override bool Execute(List<string> args, TextMessage message)
+		internal override bool Execute(List<string> args, TextMessage message, PersonDb db)
 		{
 			StringBuilder outMessage = new StringBuilder();
-			Error result = DbInterface.AddPlayer(message.InvokerUid, message.InvokerName, args.Count > 0 ? args[0] : "");
+			Error result = DbInterface.AddPlayer(message.InvokerUid, message.InvokerName, db, args.Count > 0 ? args[0] : "");
 
 			outMessage.Append("\n");
 
