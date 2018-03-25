@@ -14,15 +14,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="TeamSpeak3QueryApi">
-      <HintPath>D:\Users\David\Source\Repos\TeamSpeak3QueryAPI\src\TeamSpeak3QueryApi\obj\Release\netstandard1.3\TeamSpeak3QueryApi.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="TeamSpeak3QueryApi">
+      <HintPath>..\Assemblys\TeamSpeak3QueryApi.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
