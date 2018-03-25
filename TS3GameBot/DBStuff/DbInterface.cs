@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static TS3GameBot.Program;
 
 namespace TS3GameBot.DBStuff
 {
@@ -72,6 +73,29 @@ namespace TS3GameBot.DBStuff
 			{
 				return db.Players.Count();
 			}			
+		}
+
+		public static ConnectionResult CheckConnection()
+		{
+			try
+			{
+				using (PersonDb db = new PersonDb())
+				{
+					db.Players.Count();
+				}
+			}
+			catch (MySql.Data.MySqlClient.MySqlException e)
+			{
+				Console.WriteLine(e.Message);
+				return ConnectionResult.SQLERROR;
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				return ConnectionResult.UNKNOWN;
+			}
+
+			return ConnectionResult.OK;
 		}
 
 		public static List<CasinoPlayer> GetPlayerList(int index = 0, int endIndex = 0, String name = "N/A", bool fuzzy = false)

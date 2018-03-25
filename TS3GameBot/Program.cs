@@ -23,7 +23,8 @@ namespace TS3GameBot
 			UNKNOWN = -1,
 			OK = 0,
 			SOCKET = 1,
-			QUERY = 2
+			QUERY = 2,
+			SQLERROR = 3
 		}
 
 		public static IReadOnlyList<GetClientsInfo> CurrentClients { get; private set; }
@@ -60,8 +61,7 @@ namespace TS3GameBot
 			Console.WriteLine("Connecting to TeamSpeak Server...");
 
 			switch (GameBot.Instance.Login(MyCreds.TS3User, MyCreds.TS3Pass, MyCreds.TS3Server).GetAwaiter().GetResult())
-			{		
-					
+			{						
 				case ConnectionResult.OK:
 					Console.WriteLine("Connected!");
 					break;
@@ -90,7 +90,30 @@ namespace TS3GameBot
 				//	break;
 			}
 
-			Console.WriteLine("Connecting to Database..."); 
+			Console.WriteLine("Connecting to Database...");
+			ConnectionResult CResult = DbInterface.CheckConnection();
+			switch (CResult)
+			{
+				case ConnectionResult.OK:
+					Console.WriteLine("Connected!");
+					break;
+				case ConnectionResult.SQLERROR:
+					Console.BackgroundColor = ConsoleColor.Red;
+					Console.ForegroundColor = ConsoleColor.White;
+					Console.WriteLine("\nCould not connect to Database! Error: " + CResult + " Check your Settings! (" + CredPathJson + ")\n\nPress Enter to exit");
+					while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+					return;
+				//	break;
+
+				case ConnectionResult.UNKNOWN:
+				default:
+					Console.BackgroundColor = ConsoleColor.Red;
+					Console.ForegroundColor = ConsoleColor.White;
+					Console.WriteLine("\nCould not connect to Database! Error: " + CResult + "\n\nPress Enter to exit");
+					while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+					return;
+					//	break;
+			}
 			Console.WriteLine(DbInterface.GetPlayerCount() + " Players found!");// Making an Initial DB call, to get rid of the Delay on the first Commnand
 
 			ConsoleCommandManager.RegisterCommands();
