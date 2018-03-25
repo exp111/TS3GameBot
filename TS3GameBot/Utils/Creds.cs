@@ -10,11 +10,10 @@ namespace TS3GameBot.Utils
 
 		public String DBName { get; set; }
 		public String DBUser { get; set; }
-
 		public String DBPass { get; set; }
 
+		public String TS3Server { get; set; }
 		public String TS3User { get; set; }
-
 		public String TS3Pass { get; set; }
 
 		public Creds() { }
@@ -27,6 +26,7 @@ namespace TS3GameBot.Utils
 				DBUser = creds["DBUser"];
 				DBPass = creds["DBPass"];
 
+				TS3Server = creds["TS3Server"];
 				TS3User = creds["TS3User"];
 				TS3Pass = creds["TS3Pass"];
 			}

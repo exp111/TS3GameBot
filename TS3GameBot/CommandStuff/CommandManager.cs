@@ -57,7 +57,7 @@ namespace TS3GameBot.CommandStuff
 				CommandBase cmd;
 				try
 				{
-					cmd = Commands[label]; // Getting the Command Assoscccscsiated to the give Command
+					cmd = Commands[label.ToLower()]; // Getting the Command Assoscccscsiated to the give Command
 				}
 				catch (KeyNotFoundException)
 				{

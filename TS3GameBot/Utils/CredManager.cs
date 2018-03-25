@@ -49,6 +49,13 @@ namespace TS3GameBot.Utils
 			creds["DBPass"] = Console.ReadLine();
 
 			msg.Clear().
+				Append("\n\nPlease Enter your TS3Server IP").
+				Append("\n> ");
+
+			Console.Write(msg);
+			creds["TS3Server"] = Console.ReadLine();
+
+			msg.Clear().
 				Append("\n\nPlease Enter your TS3Query Username").
 				Append("\n> ");
 

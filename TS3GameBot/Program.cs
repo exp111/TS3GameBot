@@ -18,6 +18,14 @@ namespace TS3GameBot
 {
 	class Program
 	{
+		public enum ConnectionResult
+		{
+			UNKNOWN = -1,
+			OK = 0,
+			SOCKET = 1,
+			QUERY = 2
+		}
+
 		public static IReadOnlyList<GetClientsInfo> CurrentClients { get; private set; }
 
 		public Queue<String> ConsoleQueue { get; } = new Queue<string>();
@@ -50,20 +58,36 @@ namespace TS3GameBot
 
 			Console.Clear();
 			Console.WriteLine("Connecting to TeamSpeak Server...");
-			if(!GameBot.Instance.Login(MyCreds.TS3User, MyCreds.TS3Pass).GetAwaiter().GetResult())
-			{
-				// TODO: Be more Specific
 
-				Console.BackgroundColor = ConsoleColor.Red;
-				Console.ForegroundColor = ConsoleColor.White;
-				Console.WriteLine("\nCould not connect to TeamSpeak Server!\n\nPress Enter to exit");
-				Console.BackgroundColor = ConsoleColor.Black;
-				Console.ForegroundColor = ConsoleColor.Green;
-				while (Console.ReadKey(true).Key != ConsoleKey.Enter)
-				{
+			switch (GameBot.Instance.Login(MyCreds.TS3User, MyCreds.TS3Pass, MyCreds.TS3Server).GetAwaiter().GetResult())
+			{		
+					
+				case ConnectionResult.OK:
+					Console.WriteLine("Connected!");
+					break;
+				case ConnectionResult.SOCKET:
+					Console.BackgroundColor = ConsoleColor.Red;
+					Console.ForegroundColor = ConsoleColor.White;
+					Console.WriteLine("\nCould not connect to TeamSpeak Server! Is the Server offline?\n\nPress Enter to exit");
+					while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+					return;
+				//	break;
+				case ConnectionResult.QUERY:
+					Console.BackgroundColor = ConsoleColor.Red;
+					Console.ForegroundColor = ConsoleColor.White;
+					Console.WriteLine("\nPlease Enter the correct Login Credentials! (" + CredPathJson + ")\n\nPress Enter to exit");
+					while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+					return;
+				//	break;
 
-				}
-				return;
+				case ConnectionResult.UNKNOWN:
+				default:
+					Console.BackgroundColor = ConsoleColor.Red;
+					Console.ForegroundColor = ConsoleColor.White;
+					Console.WriteLine("\nCould not connect to TeamSpeak Server!\n\nPress Enter to exit");
+					while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+					return;
+				//	break;
 			}
 
 			Console.WriteLine("Connecting to Database..."); 
