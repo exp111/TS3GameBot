@@ -23,9 +23,7 @@ namespace TS3GameBot
 		public Queue<String> ConsoleQueue { get; } = new Queue<string>();
 
 		public static bool Running = true;
-
-		private static String CredPathBin { get; } = "Credentials.bin";
-
+		
 		private static String CredPathJson { get; } = "Credentials.json";
 
 		public static Creds MyCreds { get; private set; }
@@ -36,15 +34,14 @@ namespace TS3GameBot
 			Console.BackgroundColor = ConsoleColor.Black;
 			Console.ForegroundColor = ConsoleColor.Green;
 
-			if (!CredManager.CredCheck(CredPathBin))
+			if (!CredManager.CredCheck(CredPathJson))
 			{
 				MyCreds = CredManager.CreateCreds();
-				BinarySerialization.WriteToBinaryFile<Creds>(CredPathBin, MyCreds);
 				JsonSerialization.WriteToJsonFile<Creds>(CredPathJson, MyCreds);
 			}
 			else
 			{
-				MyCreds = BinarySerialization.ReadFromBinaryFile<Creds>(CredPathBin);
+				MyCreds = JsonSerialization.ReadFromJsonFile<Creds>(CredPathJson);
 				if(MyCreds == null)
 				{
 					throw new Exception("shit");
