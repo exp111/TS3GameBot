@@ -31,13 +31,21 @@ namespace TS3GameBot
 
 		public async Task Login() => await Login(this.LoginName, this.LoginPass);
 
-		public async Task Login(String LoginName, String LoginPass)
+		public async Task<bool> Login(String LoginName, String LoginPass)
 		{
 			TSClient = new TeamSpeakClient(this.Host);
+			try
+			{		
+				await TSClient.Connect();
 
-			await TSClient.Connect();
-
-			await TSClient.Login(this.LoginName, this.LoginPass);
+				await TSClient.Login(this.LoginName, this.LoginPass);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("shittti " + e.Message);
+				return false;
+			}
+			return true;
 		}
 
 

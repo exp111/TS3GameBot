@@ -52,6 +52,23 @@ namespace TS3GameBot
 			}
 
 			Console.Clear();
+			Console.WriteLine("Connecting to TeamSpeak Server...");
+			if(!GameBot.Instance.Login(MyCreds.TS3User, MyCreds.TS3Pass).GetAwaiter().GetResult())
+			{
+				// TODO: Be more Specific
+
+				Console.BackgroundColor = ConsoleColor.Red;
+				Console.ForegroundColor = ConsoleColor.White;
+				Console.WriteLine("\nCould not connect to TeamSpeak Server!\n\nPress Enter to exit");
+				Console.BackgroundColor = ConsoleColor.Black;
+				Console.ForegroundColor = ConsoleColor.Green;
+				while (Console.ReadKey(true).Key != ConsoleKey.Enter)
+				{
+
+				}
+				return;
+			}
+
 			Console.WriteLine("Connecting to Database..."); 
 			Console.WriteLine(DbInterface.GetPlayerCount() + " Players found!");// Making an Initial DB call, to get rid of the Delay on the first Commnand
 
@@ -129,8 +146,7 @@ namespace TS3GameBot
 		public static void RunBot(object sid)
 		{
 			GameBot myBot = GameBot.Instance;
-
-			myBot.Login(MyCreds.TS3User, MyCreds.TS3Pass).Wait();
+					
 			myBot.StartBot((int)sid).Wait();
 
 			myBot.EventShit();
