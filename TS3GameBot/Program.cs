@@ -102,6 +102,8 @@ namespace TS3GameBot
 					Console.ForegroundColor = ConsoleColor.White;
 					Console.WriteLine("\nCould not connect to Database! Error: " + CResult + " Check your Settings! (" + CredPathJson + ")\n\nPress Enter to exit");
 					while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+					Console.BackgroundColor = ConsoleColor.Black;
+					Console.ForegroundColor = ConsoleColor.Green;
 					return;
 				//	break;
 
@@ -111,6 +113,8 @@ namespace TS3GameBot
 					Console.ForegroundColor = ConsoleColor.White;
 					Console.WriteLine("\nCould not connect to Database! Error: " + CResult + "\n\nPress Enter to exit");
 					while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+					Console.BackgroundColor = ConsoleColor.Black;
+					Console.ForegroundColor = ConsoleColor.Green;
 					return;
 					//	break;
 			}
