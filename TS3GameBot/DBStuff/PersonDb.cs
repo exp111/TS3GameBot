@@ -14,6 +14,9 @@ namespace TS3GameBot.DBStuff
 			optionsBuilder.UseMySql(@"Server=localhost;Database=" + Program.MyCreds.DBName + ";User=" + Program.MyCreds.DBUser + ";Password=" + Program.MyCreds.DBPass);
 		}
 
-		public PersonDb() { }
+		public PersonDb()
+		{
+			Database.EnsureCreated();
+		}
 	}
 }
