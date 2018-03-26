@@ -26,6 +26,7 @@ namespace TS3GameBot.CommandStuff
 			RegisterCommand(new CommandDaily("daily", "Get your frickinnn Daily reeeeeword"));
 			RegisterCommand(new CommandWallet("wallet", "Get the amount of cash you have"));
 			RegisterCommand(new CommandTransfer("transfer", "Transfer your money 2 peepz"));
+			RegisterCommand(new CommandSpin("spin", "Get your game on"));
 		}
 
 		private static void RegisterCommand(CommandBase command)
@@ -57,7 +58,7 @@ namespace TS3GameBot.CommandStuff
 				CommandBase cmd;
 				try
 				{
-					cmd = Commands[label.ToLower()]; // Getting the Command Assoscccscsiated to the give Command
+					cmd = Commands[label.ToLower()]; // Getting the Command associated to the given Command
 				}
 				catch (KeyNotFoundException)
 				{
@@ -73,9 +74,14 @@ namespace TS3GameBot.CommandStuff
 
 				using (PersonDb db = new PersonDb())
 				{
+					if(cmd.NeedsRegister && !DbInterface.IsRegistered(msg.InvokerUid, db).GetAwaiter().GetResult())
+					{
+						AnswerCall(msg, Responses.NotRegistered);
+						return;
+					}
 					cmd.Execute(args, msg, db);
-				}
-				
+					return;
+				}			
 
 			}
 		}

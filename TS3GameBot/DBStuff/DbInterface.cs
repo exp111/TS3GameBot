@@ -40,7 +40,7 @@ namespace TS3GameBot.DBStuff
 		{
 			CasinoPlayer tempPlayer = new CasinoPlayer { Id = uid, Name = name, Points = points, SteamID64 = steamID };
 
-			if (IsAlive(tempPlayer).GetAwaiter().GetResult())
+			if (IsRegistered(tempPlayer, db).GetAwaiter().GetResult())
 			{
 				return Error.DUPLICATE;
 			}
@@ -129,20 +129,14 @@ namespace TS3GameBot.DBStuff
 			}
 		}
 
-		public static async Task<bool> IsAlive(CasinoPlayer myPlayer)
+		public static async Task<bool> IsRegistered(CasinoPlayer myPlayer, PersonDb db)
 		{
-			using (PersonDb db = new PersonDb())
-			{
-				return (await db.Players.FindAsync(myPlayer.Id)) != null;
-			}
+			return (await db.Players.FindAsync(myPlayer.Id)) != null;
 		}
 
-		public static async Task<bool> IsAlive(String uid)
+		public static async Task<bool> IsRegistered(String uid, PersonDb db)
 		{
-			using (PersonDb db = new PersonDb())
-			{
-				return (await db.Players.FindAsync(uid)) != null;
-			}
+			return (await db.Players.FindAsync(uid)) != null;
 		}
 
 		public static Error SaveChanges()

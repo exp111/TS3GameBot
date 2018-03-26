@@ -22,44 +22,34 @@ namespace TS3GameBot.CommandStuff.Commands
 			StringBuilder outMessage = new StringBuilder();
 
 			outMessage.Append("\n");
-
-			if (myPlayer != null)
+			
+			if (myPlayer.LastDaily.Year < DateTime.Now.Year ||
+				myPlayer.LastDaily.Month < DateTime.Now.Month ||
+				myPlayer.LastDaily.Day < DateTime.Now.Day)
 			{
-				//myPlayer.LastDaily <= DateTime.Now.AddDays(-1)
-				if (myPlayer.LastDaily.Year < DateTime.Now.Year ||
-					myPlayer.LastDaily.Month < DateTime.Now.Month ||
-					myPlayer.LastDaily.Day < DateTime.Now.Day)
+				Error result = DbInterface.UpdateDaily(myPlayer.Id, this.DailyReward, db);
+				switch (result)
 				{
-					Error result = DbInterface.UpdateDaily(myPlayer.Id, this.DailyReward, db);
-					switch (result)
-					{
-						case Error.OK:
-							outMessage.Append(this.DailyReward + " Points have been added to your Wallet!\nYou now have " + myPlayer.Points + " Points in your Wallet!");
-							break;
-						case Error.SAVEERROR:
-							outMessage.Append("Changes could not be saved to the Database!");
-							break;
-						case Error.UNKNOWN:
-						default:
-							outMessage.Append("An Unknown Error Occured");
-							break;
-					}
+					case Error.OK:
+						outMessage.Append(this.DailyReward + " Points have been added to your Wallet!\nYou now have " + myPlayer.Points + " Points in your Wallet!");
+						break;
+					case Error.SAVEERROR:
+						outMessage.Append("Changes could not be saved to the Database!");
+						break;
+					case Error.UNKNOWN:
+					default:
+						outMessage.Append("An Unknown Error Occured");
+						break;
 				}
-				else
-				{
-					outMessage.Append(CommandManager.ClientUrl(myPlayer.Id, myPlayer.Name) + ": You already received your Daily reward " + Utils.Utils.MsToM((DateTime.Now - myPlayer.LastDaily).TotalMilliseconds) + " ago!\nCome back in " + Utils.Utils.MsToM((DateTime.Now.AddDays(1).Date - DateTime.Now).TotalMilliseconds) + ".");
-					CommandManager.AnswerCall(message, outMessage.ToString());
-					return false;
-				}
-				CommandManager.AnswerCall(message, outMessage.ToString());
-				return true;
 			}
 			else
 			{
-				CommandManager.AnswerCall(message, "\nYou are not registered yet!\nUse " + CommandManager.CmdIndicator + CommandManager.Commands["register"].Label + " to register yourshelf.");
+				outMessage.Append(CommandManager.ClientUrl(myPlayer.Id, myPlayer.Name) + ": You already received your Daily reward " + Utils.Utils.MsToM((DateTime.Now - myPlayer.LastDaily).TotalMilliseconds) + " ago!\nCome back in " + Utils.Utils.MsToM((DateTime.Now.AddDays(1).Date - DateTime.Now).TotalMilliseconds) + ".");
+				CommandManager.AnswerCall(message, outMessage.ToString());
 				return false;
 			}
-
+			CommandManager.AnswerCall(message, outMessage.ToString());
+			return true;
 		}
 	}
 }

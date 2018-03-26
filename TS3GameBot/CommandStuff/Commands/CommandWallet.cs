@@ -20,11 +20,6 @@ namespace TS3GameBot.CommandStuff.Commands
 			StringBuilder outMessage = new StringBuilder();
 
 			CasinoPlayer tempPlayer = DbInterface.GetPlayer(message.InvokerUid, db);
-			if(tempPlayer == null)
-			{
-				CommandManager.AnswerCall(message, Responses.NotRegistered);
-				return false;
-			}
 
 			outMessage.Append("\n").
 				Append(CommandManager.ClientUrl(tempPlayer.Id, tempPlayer.Name) + ": You have " + tempPlayer.Points + " in your Wallet!");

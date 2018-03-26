@@ -11,6 +11,7 @@ namespace TS3GameBot.CommandStuff.Commands
 		public CommandRegister(string label, string description) : base(label, description)
 		{
 			this.Usage = "[ SteamID64 ]";
+			this.NeedsRegister = false;
 		}
 
 		internal override bool Execute(List<string> args, TextMessage message, PersonDb db)

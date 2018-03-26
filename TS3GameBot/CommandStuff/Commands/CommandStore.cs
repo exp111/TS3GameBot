@@ -11,13 +11,15 @@ namespace TS3GameBot.CommandStuff.Commands
 		public CommandStore(string label, string description) : base(label, description)
 		{
 			this.Usage = "<list | buy> [item]";
+			this.WIP = true;
+			this.NeedsRegister = true;
 		}
 
-		internal override bool Execute(List<string> args, TextMessage message, PersonDb db)
+		internal override bool Execute(List<string> args, TextMessage msg, PersonDb db)
 		{
 			if (args.Count < 1) //Not enough parameters => Show Usage
 			{
-				CommandManager.AnswerCall(message, "\nUsage:\n" + CommandManager.CmdIndicator + this.Label + " " + this.Usage);
+				CommandManager.AnswerCall(msg, "\nUsage:\n" + CommandManager.CmdIndicator + this.Label + " " + this.Usage);
 				return false;
 			}
 
@@ -26,20 +28,13 @@ namespace TS3GameBot.CommandStuff.Commands
 				if (args.Count == 2) //if we have no item to buy -> show list
 				{
 					//Get Invoker
-					CasinoPlayer invoker = DbInterface.GetPlayer(message.InvokerUid, db);
-
-					if (invoker == null) //Invoker not registered => tell 'em boi
-					{
-						CommandManager.AnswerCall(message, Responses.NotRegistered);
-						return false;
-					}
+					CasinoPlayer invoker = DbInterface.GetPlayer(msg.InvokerUid, db);
 
 					/*if (invoker.Points < amount) //Not enough points
 					{
 						CommandManager.AnswerCall(message, Utils.Utils.ApplyColor(Color.Red) + "\nNot enough Points in your Wallet![S](get fucked)[/S][/COLOR]");
 						return false;
 					}
-
 					//Change the points nauw
 					if (!DbInterface.AlterPoints(invoker, -amount)) //Can't change points for some reason
 					{
@@ -59,7 +54,7 @@ namespace TS3GameBot.CommandStuff.Commands
 			if (args[0].ToLower() == "list") //List items
 			{
 				//List
-				CommandManager.AnswerCall(message, "\nItems:");
+				CommandManager.AnswerCall(msg, "\nItems:");
 				return true;
 			}
 

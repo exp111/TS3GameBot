@@ -213,6 +213,13 @@ namespace TS3GameBot
 					Console.Beep();
 				}
 			}
+			Console.BackgroundColor = ConsoleColor.Black;
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.Clear();
+			while (!botThread.IsAlive)
+			{
+				Console.WriteLine("Waiting for Bot Thread to finish!");
+			}
 		}
 
 		public static void RunBot()
