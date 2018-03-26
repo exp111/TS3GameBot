@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using TS3GameBot.Utils.Settings;
 
 namespace TS3GameBot.Utils
 {
@@ -48,8 +50,32 @@ namespace TS3GameBot.Utils
 			Console.Write(msg);
 			creds["DBPass"] = Console.ReadLine();
 
+			foreach (var item in CreateTS3Info())
+			{
+				creds[item.Key] = item.Value;
+			}			
+
+			Creds shit = new Creds(creds);
+
+			return shit;
+
+		}
+
+		internal static Dictionary<String, String> CreateTS3Info()
+		{
+			StringBuilder msg = new StringBuilder();
+			Dictionary<String, String> creds = new Dictionary<string, string>();
+
+			Console.Clear();
 			msg.Clear().
-				Append("\n\nPlease Enter your TS3Server IP").
+				Append("Now we are gonna add a new TS3 Server. Enter the Description of this Server here (Any name you like)").
+				Append("\n> ");
+
+			Console.Write(msg);
+			creds["TS3CustomName"] = Console.ReadLine();
+
+			msg.Clear().
+				Append("\n\nPlease Enter your TS3Server Address").
 				Append("\n> ");
 
 			Console.Write(msg);
@@ -69,10 +95,7 @@ namespace TS3GameBot.Utils
 			Console.Write(msg);
 			creds["TS3Pass"] = Console.ReadLine();
 
-			Creds shit = new Creds(creds);
-
-			return shit;
-
+			return creds;
 		}
 	}
 }

@@ -13,6 +13,7 @@ using TS3GameBot.CommandStuff.Commands;
 using TS3GameBot.DBStuff;
 using TS3GameBot.Utils;
 using Newtonsoft.Json;
+using TS3GameBot.Utils.Settings;
 
 namespace TS3GameBot
 {
@@ -60,7 +61,30 @@ namespace TS3GameBot
 			Console.Clear();
 			Console.WriteLine("Connecting to TeamSpeak Server...");
 
-			switch (GameBot.Instance.Login(MyCreds.TS3User, MyCreds.TS3Pass, MyCreds.TS3Server).GetAwaiter().GetResult())
+			TS3QueryInfo ts3ServerInfo;
+			if (MyCreds.TS3InfoList.Count > 1)
+			{
+				Console.WriteLine("You have more than 1 TS3 Server configured!\nPlease choose 1 of the following:\n");
+				foreach (var item in MyCreds.TS3InfoList)
+				{
+					Console.WriteLine("[" + item.Key + "] on " + item.Value.ServerAddress);
+				}
+				Console.Write("> ");
+				String input = Console.ReadLine();
+				ts3ServerInfo = MyCreds.TS3InfoList.Where(e => e.Key.ToLower().Equals(input.ToLower())).FirstOrDefault().Value;
+				while (ts3ServerInfo == null)
+				{
+					Console.WriteLine("Not found. Try Again!");
+					Console.Write("> ");
+					ts3ServerInfo = MyCreds.TS3InfoList.Where(e => e.Key.ToLower().Equals(Console.ReadLine().ToLower())).First().Value;
+				}
+			}
+			else
+			{
+				ts3ServerInfo = MyCreds.TS3InfoList.First().Value;
+			}
+
+			switch (GameBot.Instance.Login(ts3ServerInfo).GetAwaiter().GetResult())
 			{						
 				case ConnectionResult.OK:
 					Console.WriteLine("Connected!");
@@ -122,7 +146,7 @@ namespace TS3GameBot
 
 			ConsoleCommandManager.RegisterCommands();
 			Thread botThread = new Thread(RunBot);
-			botThread.Start(1);
+			botThread.Start();
 
 			List<String> commandArgs = new List<string>();
 			Console.WriteLine("Welcome to Dj's GameBot!\nUse 'help' for a list of commands.\nUse 'help <command>' for Usage of given Command.");
@@ -191,11 +215,11 @@ namespace TS3GameBot
 			}
 		}
 
-		public static void RunBot(object sid)
+		public static void RunBot()
 		{
 			GameBot myBot = GameBot.Instance;
 					
-			myBot.StartBot((int)sid).Wait();
+			myBot.StartBot(myBot.VServerID).Wait();
 
 			myBot.EventShit();
 			CommandStuff.CommandManager.RegisterCommands();

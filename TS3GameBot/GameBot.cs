@@ -8,6 +8,7 @@ using TeamSpeak3QueryApi.Net.Specialized.Notifications;
 using TeamSpeak3QueryApi.Net.Specialized.Responses;
 using System.Net.Sockets;
 using static TS3GameBot.Program;
+using TS3GameBot.Utils.Settings;
 
 namespace TS3GameBot
 {
@@ -20,6 +21,8 @@ namespace TS3GameBot
 		private String LoginPass { get; set; } = "OY3pSQF4";
 
 		public TeamSpeakClient TSClient { get; private set; }
+		public int VServerID { get; private set; }
+
 		public WhoAmI Who { get; private set; }
 
 		public static GameBot Instance { get; } = new GameBot();
@@ -28,12 +31,13 @@ namespace TS3GameBot
 		{
 			
 		}
+		
+		public async Task<ConnectionResult> Login(TS3QueryInfo info) => await Login(info.TS3LoginName, info.TS3LoginPass, info.ServerAddress, info.VirtualServerID);
 
-		public async Task Login() => await Login(this.LoginName, this.LoginPass, this.Server);
-
-		public async Task<ConnectionResult> Login(String LoginName, String LoginPass, String Server)
+		public async Task<ConnectionResult> Login(String LoginName, String LoginPass, String Server, int VServerID = 1)
 		{
 			TSClient = new TeamSpeakClient(Server);
+			this.VServerID = VServerID;
 			try
 			{		
 				await TSClient.Connect();
