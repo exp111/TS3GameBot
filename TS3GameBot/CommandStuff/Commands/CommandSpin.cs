@@ -17,6 +17,7 @@ namespace TS3GameBot.CommandStuff.Commands
 		{
 			this.Usage = "";
 			this.NeedsRegister = true;
+			this.Enabled = false; // Will be enabled when @exp111 fixes #17
 
 			this.Cost = 25;
 			this.MagicNumber = 6;
