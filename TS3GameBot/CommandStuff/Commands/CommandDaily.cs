@@ -31,7 +31,7 @@ namespace TS3GameBot.CommandStuff.Commands
 				switch (result)
 				{
 					case Error.OK:
-						outMessage.Append(this.DailyReward + " Points have been added to your Wallet!\nYou now have " + myPlayer.Points + " Points in your Wallet!");
+						outMessage.Append($"{this.DailyReward} Points have been added to your Wallet!\nYou now have {myPlayer.Points} Points in your Wallet!");
 						break;
 					case Error.SAVEERROR:
 						outMessage.Append("Changes could not be saved to the Database!");
@@ -44,7 +44,7 @@ namespace TS3GameBot.CommandStuff.Commands
 			}
 			else
 			{
-				outMessage.Append(CommandManager.ClientUrl(myPlayer.Id, myPlayer.Name) + ": You already received your Daily reward " + Utils.Utils.MsToM((DateTime.Now - myPlayer.LastDaily).TotalMilliseconds) + " ago!\nCome back in " + Utils.Utils.MsToM((DateTime.Now.AddDays(1).Date - DateTime.Now).TotalMilliseconds) + ".");
+				outMessage.Append($"{CommandManager.ClientUrl(myPlayer.Id, myPlayer.Name)}: You already received your Daily reward {Utils.Utils.MsToM((DateTime.Now - myPlayer.LastDaily).TotalMilliseconds)} ago!\nCome back in {Utils.Utils.MsToM((DateTime.Now.AddDays(1).Date - DateTime.Now).TotalMilliseconds)}.");
 				CommandManager.AnswerCall(message, outMessage.ToString());
 				return false;
 			}

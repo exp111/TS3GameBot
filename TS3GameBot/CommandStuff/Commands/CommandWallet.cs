@@ -12,7 +12,6 @@ namespace TS3GameBot.CommandStuff.Commands
 		public CommandWallet(string label, string description) : base(label, description)
 		{
 			this.Usage = "";
-			this.WIP = false;
 		}
 
 		internal override bool Execute(List<string> args, TextMessage message, PersonDb db)
@@ -22,7 +21,7 @@ namespace TS3GameBot.CommandStuff.Commands
 			CasinoPlayer tempPlayer = DbInterface.GetPlayer(message.InvokerUid, db);
 
 			outMessage.Append("\n").
-				Append(CommandManager.ClientUrl(tempPlayer.Id, tempPlayer.Name) + ": You have " + tempPlayer.Points + " in your Wallet!");
+				Append($"{CommandManager.ClientUrl(tempPlayer.Id, tempPlayer.Name)}: You have {tempPlayer.Points} in your Wallet!");
 
 			return CommandManager.AnswerCall(message, outMessage.ToString());
 		}

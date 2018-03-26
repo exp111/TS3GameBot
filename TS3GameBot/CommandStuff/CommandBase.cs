@@ -15,13 +15,13 @@ namespace TS3GameBot.CommandStuff
 
 		public String Usage { get; set; } = "";
 
-		public bool WIP { get; set; } = false;
+		public bool WIP { get; set; }
 
 		public bool Enabled { get; set; } = true;
 
-		public bool Hidden { get; set; } = false;
+		public bool Hidden { get; set; }
 
-		public bool Restricted { get; set; } = false;
+		public bool Restricted { get; set; }
 
 		public bool NeedsRegister { get; set; } = true;
 
@@ -33,7 +33,7 @@ namespace TS3GameBot.CommandStuff
 
 		public String GetUsage()
 		{
-			return "\n[Usage]\n " + CommandManager.CmdIndicator + Label + " " + this.Usage;
+			return $"\n[Usage]\n {CommandManager.CmdIndicator}{Label} {this.Usage}";
 		}
 		
 		internal abstract bool Execute(List<string> args, TextMessage msg, PersonDb db);

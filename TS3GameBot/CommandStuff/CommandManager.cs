@@ -62,7 +62,7 @@ namespace TS3GameBot.CommandStuff
 				}
 				catch (KeyNotFoundException)
 				{
-					AnswerCall(msg, "\nUnknown Command '" + CmdIndicator + label + "'");
+					AnswerCall(msg, $"\nUnknown Command '{CmdIndicator}{label}'");
 					return;
 				}
 
@@ -107,7 +107,7 @@ namespace TS3GameBot.CommandStuff
 
 		public static String ClientUrl(String uid, String name)
 		{
-			return "[URL=client://0/" + uid + "]" + name + "[/URL]";
+			return $"[URL=client://0/{uid}]{name}[/URL]";
 		}
 
 	}

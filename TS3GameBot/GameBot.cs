@@ -99,7 +99,7 @@ namespace TS3GameBot
 
 			foreach (var item in shit)
 			{
-				dang.Append("\n" + item.NickName + ": " + item.Id);
+				dang.Append($"\n{item.NickName}: {item.Id}");
 			}
 		}
 

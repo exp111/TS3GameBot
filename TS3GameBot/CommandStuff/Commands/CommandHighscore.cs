@@ -25,7 +25,7 @@ namespace TS3GameBot.CommandStuff.Commands
 				foreach (CasinoPlayer player in playerList)
 				{
 					outMessage.
-						Append("\n"+ i +". Player " + CommandManager.ClientUrl(player.Id, player.Name) + " has a Total of " + player.Points + "!");
+						Append($"\n{i}. Player {CommandManager.ClientUrl(player.Id, player.Name)} has a Total of {player.Points}!");
 					i++;
 				}
 			}
@@ -36,13 +36,13 @@ namespace TS3GameBot.CommandStuff.Commands
 				foreach (CasinoPlayer player in playerList)
 				{
 					outMessage.
-						Append("\n" + i + ". Player " + CommandManager.ClientUrl(player.Id, player.Name) + " has a Total of " + player.Points + "!");
+						Append($"\n{i}. Player {CommandManager.ClientUrl(player.Id, player.Name)} has a Total of {player.Points}!");
 					i++;
 				}
 			}
 			else
 			{
-				CommandManager.AnswerCall(message, "\nUnknown usage!\n" + this.Usage);
+				CommandManager.AnswerCall(message, $"\nUnknown usage!\n{this.Usage}");
 			}
 			
 			CommandManager.AnswerCall(message, outMessage.ToString());

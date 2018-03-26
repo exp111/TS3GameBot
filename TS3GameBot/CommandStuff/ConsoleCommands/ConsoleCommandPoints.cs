@@ -29,7 +29,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 			// show case
 			if ( args.Count == 1 )
 			{
-				Console.WriteLine("Name: " + player.Name + "\nPoints: " + player.Points + "\nSteam: " + player.SteamID64);
+				Console.WriteLine($"Name: {player.Name}\nPoints: {player.Points}\nSteam: {player.SteamID64}");
 				return CCR.OK;
 			}
 			// change case
@@ -47,7 +47,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 				switch (DbInterface.SaveChanges(db))
 				{
 					case Error.OK:
-						Console.WriteLine("Points altered from " + (player.Points - amount) + " to " + player.Points);
+						Console.WriteLine($"Points altered from {(player.Points - amount)} to {player.Points}");
 						return CCR.OK;
 					//	break;
 					case Error.SAVEERROR:
@@ -79,7 +79,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 				switch (DbInterface.SaveChanges(db))
 				{
 					case Error.OK:
-						Console.WriteLine(player.Name + "'s Points were altered from " + oldAmount + " to " + player.Points);
+						Console.WriteLine($"{player.Name}'s Points were altered from {oldAmount} to {player.Points}");
 						return CCR.OK;
 					//	break;
 					case Error.SAVEERROR:

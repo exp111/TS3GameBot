@@ -43,11 +43,11 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 
 			if (page > pageCount)
 			{
-				outMessage.Append("There are only " + pageCount + " pages!");
+				outMessage.Append($"There are only {pageCount} pages!");
 			}
 			else
 			{
-				outMessage.Append("Total Players: " + playerCount + "\nPage (" + page + "/" + pageCount + ")\n");
+				outMessage.Append($"Total Players: {playerCount}\nPage ({page}/{pageCount})\n");
 
 				List<GetClientsInfo> shit = Program.CurrentClients.ToList();
 				outMessage.AppendFormat("{0, -15} | {1, -15} | {2, -28} | {3, -15}\n\n", "Name", "DdId", "uid", "SteamID64");

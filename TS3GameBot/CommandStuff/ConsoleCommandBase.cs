@@ -39,7 +39,7 @@ namespace TS3GameBot.CommandStuff.Commands
 
 		public String GetUsage()
 		{
-			return "[Usage]\n " + Label + " " + this.Usage;
+			return $"[Usage]\n {Label} {this.Usage}";
 		}
 
 		internal abstract CCR Execute(List<String> args, PersonDb db);
