@@ -40,9 +40,11 @@ namespace TS3GameBot
 
 		static void Main(string[] args)
 		{
-			Console.Title = "Shit 2k18";
+			Console.Title = "TS3GameBot by MrDj and Exp111";
 			Console.BackgroundColor = ConsoleColor.Black;
 			Console.ForegroundColor = ConsoleColor.Green;
+
+			#region CredCheck
 
 			if (!CredManager.CredCheck(CredPathJson))
 			{
@@ -57,6 +59,8 @@ namespace TS3GameBot
 					throw new Exception("shit");
 				}
 			}
+
+			#endregion
 
 			Console.Clear();
 
@@ -150,9 +154,14 @@ namespace TS3GameBot
 			}
 			#endregion			
 
-			ConsoleCommandManager.RegisterCommands();
+			#region ThreadStuff
 			Thread botThread = new Thread(RunBot);
 			botThread.Start();
+			#endregion
+
+
+
+			ConsoleCommandManager.RegisterCommands(); // Registering all Console Commands
 
 			List<String> commandArgs = new List<string>();
 			Console.WriteLine("Welcome to Dj's GameBot!\nUse 'help' for a list of commands.\nUse 'help <command>' for Usage of given Command.");
@@ -170,11 +179,14 @@ namespace TS3GameBot
 				{
 					commandArgs.Add(parts[i]); // Putin all the args in a List 
 				}
+
 				try
 				{
-					cmd = ConsoleCommandManager.Commands[parts[0].ToLower()]; // Getting the Command Assoscccscsiated to the give Command			
+					cmd = ConsoleCommandManager.Commands[parts[0].ToLower()]; // Getting the Command Assosciated to the give Command			
 					
-					CCR result = ConsoleCommandManager.ExecuteCommand(cmd, commandArgs);					
+					CCR result = ConsoleCommandManager.ExecuteCommand(cmd, commandArgs); // Tempsaving the Result 
+
+					#region ErrorHandling for Console Commands
 					switch (result)
 					{						
 						case CCR.OK:
@@ -209,9 +221,9 @@ namespace TS3GameBot
 							Console.ForegroundColor = ConsoleColor.Green;
 							break;
 					}
-
+					#endregion
 				}
-				catch (KeyNotFoundException)
+				catch (KeyNotFoundException) // If the given command is not found withing the Commands Dictionary
 				{
 					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine("Unknown Command '" + shit.Split(" ")[0] + "'!");
@@ -219,9 +231,11 @@ namespace TS3GameBot
 					Console.Beep();
 				}
 			}
+			// Changing the Color back to normal
 			Console.BackgroundColor = ConsoleColor.Black;
 			Console.ForegroundColor = ConsoleColor.Green;
-			Console.Clear();
+			Console.Clear(); // Clearing the Console
+			// Waiting for the Bot Thread to finish
 			while (!botThread.IsAlive)
 			{
 				Console.WriteLine("Waiting for Bot Thread to finish!");
