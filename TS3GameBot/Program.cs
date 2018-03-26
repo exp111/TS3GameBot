@@ -155,7 +155,7 @@ namespace TS3GameBot
 			{								
 				Console.Write("> ");
 				commandArgs.Clear();
-				String shit = Console.ReadLine();
+				String shit = Console.ReadLine().Trim();
 				ConsoleCommandBase cmd;
 
 				String[] parts = shit.Split(" ");
