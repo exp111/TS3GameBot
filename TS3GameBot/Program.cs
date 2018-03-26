@@ -59,6 +59,41 @@ namespace TS3GameBot
 			}
 
 			Console.Clear();
+
+			#region DBConnection
+			Console.WriteLine("Connecting to Database...");
+			ConnectionResult CResult = DbInterface.CheckConnection();
+			switch (CResult)
+			{
+				case ConnectionResult.OK:
+					Console.WriteLine("Connected!");
+					break;
+				case ConnectionResult.SQLERROR:
+					Console.BackgroundColor = ConsoleColor.Red;
+					Console.ForegroundColor = ConsoleColor.White;
+					Console.WriteLine("\nCould not connect to Database! Error: " + CResult + " Check your Settings! (" + CredPathJson + ")\n\nPress Enter to exit");
+					while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+					Console.BackgroundColor = ConsoleColor.Black;
+					Console.ForegroundColor = ConsoleColor.Green;
+					return;
+				//	break;
+
+				case ConnectionResult.UNKNOWN:
+				default:
+					Console.BackgroundColor = ConsoleColor.Red;
+					Console.ForegroundColor = ConsoleColor.White;
+					Console.WriteLine("\nCould not connect to Database! Error: " + CResult + "\n\nPress Enter to exit");
+					while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+					Console.BackgroundColor = ConsoleColor.Black;
+					Console.ForegroundColor = ConsoleColor.Green;
+					return;
+					//	break;
+			}
+			Console.WriteLine(DbInterface.GetPlayerCount() + " Players found!");// Making an Initial DB call, to get rid of the Delay on the first Commnand
+
+			#endregion
+
+			#region TS3Connection
 			Console.WriteLine("Connecting to TeamSpeak Server...");
 
 			TS3QueryInfo ts3ServerInfo;
@@ -113,36 +148,7 @@ namespace TS3GameBot
 					return;
 				//	break;
 			}
-
-			Console.WriteLine("Connecting to Database...");
-			ConnectionResult CResult = DbInterface.CheckConnection();
-			switch (CResult)
-			{
-				case ConnectionResult.OK:
-					Console.WriteLine("Connected!");
-					break;
-				case ConnectionResult.SQLERROR:
-					Console.BackgroundColor = ConsoleColor.Red;
-					Console.ForegroundColor = ConsoleColor.White;
-					Console.WriteLine("\nCould not connect to Database! Error: " + CResult + " Check your Settings! (" + CredPathJson + ")\n\nPress Enter to exit");
-					while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
-					Console.BackgroundColor = ConsoleColor.Black;
-					Console.ForegroundColor = ConsoleColor.Green;
-					return;
-				//	break;
-
-				case ConnectionResult.UNKNOWN:
-				default:
-					Console.BackgroundColor = ConsoleColor.Red;
-					Console.ForegroundColor = ConsoleColor.White;
-					Console.WriteLine("\nCould not connect to Database! Error: " + CResult + "\n\nPress Enter to exit");
-					while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
-					Console.BackgroundColor = ConsoleColor.Black;
-					Console.ForegroundColor = ConsoleColor.Green;
-					return;
-					//	break;
-			}
-			Console.WriteLine(DbInterface.GetPlayerCount() + " Players found!");// Making an Initial DB call, to get rid of the Delay on the first Commnand
+			#endregion			
 
 			ConsoleCommandManager.RegisterCommands();
 			Thread botThread = new Thread(RunBot);
