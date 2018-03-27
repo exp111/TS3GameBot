@@ -31,7 +31,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 					outMessage.Append("Player could not be saved to the Database!");
 					break;
 				case Error.NOTFOUND:
-					outMessage.Append("Player not found!");
+					outMessage.Append("Could not find a player with the given UID!");
 					break;
 				case Error.UNKNOWN:
 				default:

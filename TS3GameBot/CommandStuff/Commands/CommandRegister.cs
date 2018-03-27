@@ -24,7 +24,7 @@ namespace TS3GameBot.CommandStuff.Commands
 			switch (result)
 			{
 				case Error.OK:
-					outMessage.Append("Player added successfly!");
+					outMessage.Append("Player added successfully!");
 					break;
 				case Error.DUPLICATE:
 					outMessage.Append("Player already exists in the Database");
