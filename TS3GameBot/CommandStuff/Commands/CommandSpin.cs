@@ -90,7 +90,7 @@ namespace TS3GameBot.CommandStuff.Commands
 			}
 			DbInterface.SaveChanges(db);
 
-			outMessage.Append(add >= 0 ? $"You have won {add}" : "You have lost {-add}");
+			outMessage.Append(add >= 0 ? $"You have won {add}" : $"You have lost {-add}");
 			outMessage.Append($" Points. You now have {myPlayer.Points} Points!");
 
 			CommandManager.AnswerCall(msg, outMessage.ToString());
