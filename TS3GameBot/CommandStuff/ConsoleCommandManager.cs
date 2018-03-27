@@ -22,6 +22,7 @@ namespace TS3GameBot.CommandStuff
 			RegisterCommand(new ConsoleCommandTS3("ts3", "Lists all Online users on the TS3"));
 			RegisterCommand(new ConsoleCommandAdd("add", "Add a new Player to the Database"));
 			RegisterCommand(new ConsoleCommandDelete("delete", "Delete a Player from the Database"));
+			RegisterCommand(new ConsoleCommandChange("change", "Change the Name and SteamID of a Player"));
 		}
 		private static void RegisterCommand(ConsoleCommandBase command)
 		{

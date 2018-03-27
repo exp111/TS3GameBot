@@ -201,5 +201,28 @@ namespace TS3GameBot.DBStuff
 			player.Points = amount;
 			return true;
 		}
+
+		public static Error ChangePlayer(String uid, PersonDb db, String name = "", String steamID = "")
+		{
+			CasinoPlayer player = GetPlayer(uid, db);
+			if (player == null)
+			{
+				return Error.NOTFOUND;
+			}
+
+			if (name != "")
+				player.Name = name;
+
+			if (steamID != "")
+				player.SteamID64 = steamID;
+
+			int savedCount = db.SaveChanges();
+			if (savedCount < 1)
+			{
+				return Error.SAVEERROR;
+			}
+
+			return Error.OK;
+		}
 	}
 }
