@@ -23,11 +23,8 @@ namespace TS3GameBot.CommandStuff.Commands
 
 			switch (result)
 			{
-				case Error.UNKNOWN:
-					outMessage.Append("An Unknown Error Occured");
-					break;
 				case Error.OK:
-					outMessage.Append("Player added Successfullllllyyyie!");
+					outMessage.Append("Player added successfly!");
 					break;
 				case Error.DUPLICATE:
 					outMessage.Append("Player already exists in the Database");
@@ -38,8 +35,9 @@ namespace TS3GameBot.CommandStuff.Commands
 				case Error.SAVEERROR:
 					outMessage.Append("Player could not be saved to the Database!");
 					break;
+				case Error.UNKNOWN:
 				default:
-					outMessage.Append("No glue");
+					outMessage.Append("An Unknown Error Occured");
 					break;
 			}
 			CommandManager.AnswerCall(message, outMessage.ToString());

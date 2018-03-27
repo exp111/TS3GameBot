@@ -24,9 +24,6 @@ namespace TS3GameBot.CommandStuff.Commands
 			StringBuilder outMessage = new StringBuilder();
 			switch (result)
 			{
-				case Error.UNKNOWN:
-					outMessage.Append("An Unknown Error Occured");
-					break;
 				case Error.OK:
 					outMessage.Append("Player added successfully!");
 					break;
@@ -36,8 +33,9 @@ namespace TS3GameBot.CommandStuff.Commands
 				case Error.NOTFOUND:
 					outMessage.Append("Could not find a player with the given UID!");
 					break;
+				case Error.UNKNOWN:
 				default:
-					outMessage.Append("No glue");
+					outMessage.Append("An Unknown Error Occured");
 					break;
 			}
 			Console.Write(outMessage);
