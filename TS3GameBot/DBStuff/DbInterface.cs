@@ -14,7 +14,8 @@ namespace TS3GameBot.DBStuff
 		DUPLICATE = 1,
 		SAVEERROR = 2,
 		READERROR = 3,
-		INVALIDNAME = 4
+		INVALIDNAME = 4,
+		NOTFOUND = 5
 	}
 
     class DbInterface
@@ -57,6 +58,24 @@ namespace TS3GameBot.DBStuff
 			}
 
 			//Console.WriteLine("{0} records saved to database", savedCount);
+
+			return Error.OK;
+		}
+
+		public static Error DeletePlayer(String uid, PersonDb db)
+		{
+			CasinoPlayer player = GetPlayer(uid, db);
+			if (player == null)
+			{
+				return Error.NOTFOUND;
+			}
+
+			db.Players.Remove(player);
+			int savedCount = db.SaveChanges();
+			if (savedCount < 1)
+			{
+				return Error.SAVEERROR;
+			}
 
 			return Error.OK;
 		}

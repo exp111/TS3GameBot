@@ -20,7 +20,7 @@ namespace TS3GameBot.CommandStuff.Commands
 		NOTENOUGHPOINTS = 5,
 		DBWRITEFAILED = 6,
 		BELOWZERO = 7,
-		HANDLED = 8
+		HANDLED = 8,
 	}
 
 	public abstract class ConsoleCommandBase
