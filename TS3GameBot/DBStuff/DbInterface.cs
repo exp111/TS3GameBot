@@ -211,13 +211,16 @@ namespace TS3GameBot.DBStuff
 			}
 
 			if (name != "")
+			{
 				player.Name = name;
+			}
 
 			if (steamID != "")
+			{
 				player.SteamID64 = steamID;
-
-			int savedCount = db.SaveChanges();
-			if (savedCount < 1)
+			}
+			
+			if (db.SaveChanges() < 1)
 			{
 				return Error.SAVEERROR;
 			}
