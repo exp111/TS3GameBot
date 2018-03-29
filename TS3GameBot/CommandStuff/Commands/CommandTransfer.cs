@@ -55,7 +55,7 @@ namespace TS3GameBot.CommandStuff.Commands
 
 			if (invoker.Points < amount) //Not enough points
 			{
-				CommandManager.AnswerCall(message, $"{Utils.Utils.ApplyColor(Color.Red)}\nNot enough Points in your Wallet![S](get fucked)[/S][/COLOR]");
+				CommandManager.AnswerCall(message, Responses.NotEnoughPoints);
 				return false;
 			}
 

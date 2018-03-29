@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using TeamSpeak3QueryApi.Net.Specialized.Notifications;
 using TS3GameBot.CommandStuff.Commands;
@@ -10,6 +11,7 @@ namespace TS3GameBot.CommandStuff
 	static class Responses
 	{
 		public static String NotRegistered { get; } = "\nYou are not registered yet!\nUse " + CommandManager.CmdIndicator + CommandManager.Commands["register"].Label + " to register yourshelf.";
+		public static String NotEnoughPoints { get; } = $"{Utils.Utils.ApplyColor(Color.Red)}\nNot enough Points in your Wallet![S](get fucked)[/S][/COLOR]";
 	}
 
 	static class CommandManager

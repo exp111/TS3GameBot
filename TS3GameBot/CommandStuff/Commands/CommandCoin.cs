@@ -44,7 +44,7 @@ namespace TS3GameBot.CommandStuff.Commands
 			
 			if (myPlayer.Points < wager) //Not enough points
 			{
-				CommandManager.AnswerCall(msg, $"{Utils.Utils.ApplyColor(Color.Red)}\nNot enough Points in your Wallet![S](get fucked)[/S][/COLOR]");
+				CommandManager.AnswerCall(msg, Responses.NotEnoughPoints);
 				return false;
 			}
 
