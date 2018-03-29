@@ -25,7 +25,7 @@ namespace TS3GameBot.CommandStuff.Commands
 			switch (result)
 			{
 				case Error.OK:
-					outMessage.Append("Player added successfully!");
+					outMessage.Append("Player deleted successfully!");
 					break;
 				case Error.SAVEERROR:
 					outMessage.Append("Player could not be saved to the Database!");
@@ -35,7 +35,7 @@ namespace TS3GameBot.CommandStuff.Commands
 					break;
 				case Error.UNKNOWN:
 				default:
-					outMessage.Append("An Unknown Error Occured");
+					outMessage.Append("An Unknown Error Occured!");
 					break;
 			}
 			Console.Write(outMessage.Append("\n").ToString());
