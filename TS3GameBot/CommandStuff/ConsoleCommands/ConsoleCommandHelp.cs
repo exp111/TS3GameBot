@@ -45,7 +45,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 						Append(cmd.Value.Description + "\n");
 
 				}
-				Console.Write(outputMessage.Append("\n").ToString());
+				Console.WriteLine(outputMessage.ToString());
 				return CCR.OK;
 			}
 		}

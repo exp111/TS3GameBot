@@ -51,7 +51,7 @@ namespace TS3GameBot.CommandStuff.Commands
 					outMessage.Append("An Unknown Error Occured!");
 					break;
 			}
-			Console.Write(outMessage.Append("\n").ToString());
+			Console.WriteLine(outMessage.ToString());
 
 			return CCR.OK;
 		}

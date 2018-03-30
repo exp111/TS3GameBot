@@ -14,6 +14,7 @@ namespace TS3GameBot.CommandStuff.Commands
 		public CommandDaily(string label, string description) : base(label, description)
 		{
 			this.Usage = "";
+			this.NeedsRegister = true;
 		}
 
 		internal override bool Execute(List<string> args, TextMessage message, PersonDb db)

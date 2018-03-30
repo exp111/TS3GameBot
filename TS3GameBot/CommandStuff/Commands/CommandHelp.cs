@@ -12,6 +12,7 @@ namespace TS3GameBot.CommandStuff.Commands
 		public CommandHelp(string label, string description) : base(label, description)
 		{
 			this.Usage = "< command >";
+			this.NeedsRegister = false;
 		}
 
 		internal override bool Execute(List<string> args, TextMessage message, PersonDb db)

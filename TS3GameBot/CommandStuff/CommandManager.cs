@@ -12,6 +12,7 @@ namespace TS3GameBot.CommandStuff
 	{
 		public static String NotRegistered { get; } = "\nYou are not registered yet!\nUse " + CommandManager.CmdIndicator + CommandManager.Commands["register"].Label + " to register yourshelf.";
 		public static String NotEnoughPoints { get; } = $"{Utils.Utils.ApplyColor(Color.Red)}\nNot enough Points in your Wallet![S](get fucked)[/S][/COLOR]";
+		public static String NegativeNumber { get; } = $"{Utils.Utils.ApplyColor(Color.Red)}\nNumber must be positive![S](smartass, huh?)[/S][/COLOR]";
 	}
 
 	static class CommandManager

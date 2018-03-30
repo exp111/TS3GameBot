@@ -11,7 +11,7 @@ namespace TS3GameBot.CommandStuff.Commands
     {
 		public CommandCoin(string label, string description) : base(label, description)
 		{
-			this.Usage = "<heads | tails> <wager = 5>";
+			this.Usage = "<heads | tails> [wager = 5]";
 			this.NeedsRegister = true;
 		}
 
@@ -36,6 +36,11 @@ namespace TS3GameBot.CommandStuff.Commands
 				if (!Int32.TryParse(args[1], out wager))
 				{
 					CommandManager.AnswerCall(msg, $"{Utils.Utils.ApplyColor(Color.Red)}\n{args[1]} is not a number![/COLOR]");
+					return false;
+				}
+				if (wager <= 0) //Number not positive => frick off
+				{
+					CommandManager.AnswerCall(msg, Responses.NegativeNumber);
 					return false;
 				}
 			}
