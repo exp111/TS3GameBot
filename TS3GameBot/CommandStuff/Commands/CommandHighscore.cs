@@ -25,7 +25,7 @@ namespace TS3GameBot.CommandStuff.Commands
 				foreach (CasinoPlayer player in playerList)
 				{
 					outMessage.
-						Append($"\n{i}. Player {CommandManager.ClientUrl(player.Id, player.Name)} has a Total of {player.Points}!");
+						Append($"\n{i}. Player {CommandManager.ClientUrl(player.Id, player.Name)} has a Total of {player.Points:n0}!");
 					i++;
 				}
 			}
