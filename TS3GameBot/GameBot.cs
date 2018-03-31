@@ -16,10 +16,6 @@ namespace TS3GameBot
     {
 		public String Name { get; set; } = "GameBot by MrDj";
 
-		public String Server { get; set; } = "127.0.0.1";
-		private String LoginName { get; set; } = "serveradmin";
-		private String LoginPass { get; set; } = "OY3pSQF4";
-
 		public TeamSpeakClient TSClient { get; private set; }
 		public int VServerID { get; private set; }
 
