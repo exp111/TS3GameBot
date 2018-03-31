@@ -13,14 +13,14 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 			this.Usage = "<uid> [change | set] [<value>]";
 		}
 
-		public override CCR Execute(List<string> args)
+		internal override CCR Execute(List<string> args, PersonDb db)
 		{
 			#region argCompute
 			if (args.Count == 0 || args.Count == 2 || args.Count > 3)
 			{
 				return CCR.WRONGPARAM;
 			}
-			CasinoPlayer player = DbInterface.GetPlayer(args[0]);
+			CasinoPlayer player = DbInterface.GetPlayer(args[0], db);
 			if(player == null)
 			{
 				return CCR.PLAYERNOTFOUND;
@@ -29,7 +29,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 			// show case
 			if ( args.Count == 1 )
 			{
-				Console.WriteLine("Name: " + player.Name + "\nPoints: " + player.Points + "\nSteam: " + player.SteamID64);
+				Console.WriteLine($"Name: {player.Name}\nPoints: {player.Points}\nSteam: {player.SteamID64}");
 				return CCR.OK;
 			}
 			// change case
@@ -43,16 +43,11 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 				{
 					return CCR.NOTENOUGHPOINTS;
 				}
-				if (!DbInterface.AlterPoints(player, amount))
-				{
-					return CCR.NOTENOUGHPOINTS;
-				}
-
-
-				switch (DbInterface.SaveChanges())
+				
+				switch (DbInterface.SaveChanges(db))
 				{
 					case Error.OK:
-						Console.WriteLine("Points altered from " + (player.Points - amount) + " to " + player.Points);
+						Console.WriteLine($"Points altered from {(player.Points - amount)} to {player.Points}");
 						return CCR.OK;
 					//	break;
 					case Error.SAVEERROR:
@@ -64,8 +59,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 					default:
 						return CCR.UNKNOWN;
 					//	break;
-				}			
-
+				}
 			}
 			// set case
 			if(args[1].ToLower() == "set")
@@ -74,20 +68,22 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 				{
 					return CCR.NOTANUMBER;
 				}
-				int oldAmount = player.Points;
-				if (!DbInterface.SetPoints(player, amount))
+				if(amount < 0)
 				{
 					return CCR.BELOWZERO;
-				}			
+				}
+				int oldAmount = player.Points;
 
-				switch (DbInterface.SaveChanges())
+				db.Players.Find(player.Id).Points = amount; // Setting the amount of Points
+
+				switch (DbInterface.SaveChanges(db))
 				{
 					case Error.OK:
-						Console.WriteLine(player.Name + "'s Points were altered from " + oldAmount + " to " + player.Points);
+						Console.WriteLine($"{player.Name}'s Points were altered from {oldAmount} to {player.Points}");
 						return CCR.OK;
 					//	break;
 					case Error.SAVEERROR:
-						DbInterface.SetPoints(player, oldAmount);
+						db.Players.Find(player.Id).Points = oldAmount;// Resetting the amount of Points to the Old value
 						return CCR.DBWRITEFAILED;
 					//	break;
 

@@ -14,7 +14,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 			this.Usage = "[name | uid]";
 		}
 
-		public override CCR Execute(List<string> args)
+		internal override CCR Execute(List<string> args, PersonDb db)
 		{
 			List<CasinoPlayer> playerList = new List<CasinoPlayer>();
 			if (args.Count != 1 || args[0] == "")
@@ -24,7 +24,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 
 			if (args[0].EndsWith("="))
 			{
-				playerList.Add(DbInterface.GetPlayer(args[0]));
+				playerList.Add(DbInterface.GetPlayer(args[0], db));
 			}
 			else
 			{

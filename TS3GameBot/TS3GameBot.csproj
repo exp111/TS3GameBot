@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RuntimeIdentifiers>win10-x64;linux-x64;win-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -14,15 +15,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="TeamSpeak3QueryApi">
-      <HintPath>D:\Users\David\Source\Repos\TeamSpeak3QueryAPI\src\TeamSpeak3QueryApi\obj\Release\netstandard1.3\TeamSpeak3QueryApi.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
+    <Reference Include="TeamSpeak3QueryApi">
+      <HintPath>..\Assemblys\TeamSpeak3QueryApi.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

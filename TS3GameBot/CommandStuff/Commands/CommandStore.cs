@@ -31,11 +31,12 @@ namespace TS3GameBot.CommandStuff.Commands
 		{
 			this.Usage = "<list | buy> [item]";
 			this.NeedsRegister = true;
+			this.WIP = true;
 
 			items.Add(new Item("Test", "This is a description", 5, "test_item"));
 		}
 
-		public override bool Execute(List<string> args, TextMessage message)
+		internal override bool Execute(List<string> args, TextMessage message, PersonDb db)
 		{
 			if (args.Count < 1) //Not enough parameters => Show Usage
 			{
@@ -51,7 +52,7 @@ namespace TS3GameBot.CommandStuff.Commands
 				if (args.Count == 2 && GetItem(args[1]) != null) //if we have no item to buy -> show list
 				{
 					//Get Invoker
-					CasinoPlayer invoker = DbInterface.GetPlayer(message.InvokerUid);
+					CasinoPlayer invoker = DbInterface.GetPlayer(message.InvokerUid, db);
 
 					Item item = GetItem(args[1]);
 					if (invoker.Points < item.Price) //Not enough points
@@ -59,7 +60,6 @@ namespace TS3GameBot.CommandStuff.Commands
 						CommandManager.AnswerCall(message, Utils.Utils.ApplyColor(Color.Red) + "\nNot enough Points in your Wallet![S](get fucked)[/S][/COLOR]");
 						return false;
 					}
-
 					//Change the points nauw
 					if (!DbInterface.AlterPoints(invoker, -item.Price)) //Can't change points for some reason
 					{
@@ -94,7 +94,7 @@ namespace TS3GameBot.CommandStuff.Commands
 						outMessage.AppendFormat("{0, -15} | {1, -15}\n", item.Name, item.Price);
 					}
 				}
-				CommandManager.AnswerCall(message, outMessage);
+				CommandManager.AnswerCall(message, outMessage.ToString());
 				return true;
 			}
 

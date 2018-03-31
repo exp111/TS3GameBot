@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TS3GameBot.CommandStuff.Commands;
 using TS3GameBot.CommandStuff.ConsoleCommands;
+using TS3GameBot.DBStuff;
 
 namespace TS3GameBot.CommandStuff
 {
@@ -18,11 +19,22 @@ namespace TS3GameBot.CommandStuff
 			RegisterCommand(new ConsoleCommandList("list", "List all registered Players"));
 			RegisterCommand(new ConsoleCommandClear("clear", "Clears the Console Window"));
 			RegisterCommand(new ConsoleCommandFind("find", "Finds a given Player"));
-			RegisterCommand(new ConsoleCommandTS3("ts3", "lists all Online users on the TS3"));
+			RegisterCommand(new ConsoleCommandTS3("ts3", "Lists all Online users on the TS3"));
+			RegisterCommand(new ConsoleCommandAdd("add", "Add a new Player to the Database"));
+			RegisterCommand(new ConsoleCommandDelete("delete", "Delete a Player from the Database"));
+			RegisterCommand(new ConsoleCommandChange("edit", "Change the Name and SteamID of a Player"));
 		}
 		private static void RegisterCommand(ConsoleCommandBase command)
 		{
 			Commands.Add(command.Label.ToLower(), command);
+		}
+
+		internal static CCR ExecuteCommand(ConsoleCommandBase cmd, List<String> args)
+		{
+			using (PersonDb db = new PersonDb())
+			{
+				return cmd.Execute(args, db);
+			}			
 		}
 	}
 }

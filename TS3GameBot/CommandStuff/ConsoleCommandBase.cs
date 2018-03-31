@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TS3GameBot.DBStuff;
 
 namespace TS3GameBot.CommandStuff.Commands
 {
@@ -38,9 +39,9 @@ namespace TS3GameBot.CommandStuff.Commands
 
 		public String GetUsage()
 		{
-			return "[Usage]\n " + Label + " " + this.Usage;
+			return $"[Usage]\n {Label} {this.Usage}";
 		}
 
-		public abstract CCR Execute(List<String> args);
+		internal abstract CCR Execute(List<String> args, PersonDb db);
 	}
 }

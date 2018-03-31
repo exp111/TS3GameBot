@@ -58,11 +58,11 @@ namespace TS3GameBot.CommandStuff
 				CommandBase cmd;
 				try
 				{
-					cmd = Commands[label]; // Getting the Command Assoscccscsiated to the give Command
+					cmd = Commands[label.ToLower()]; // Getting the Command associated to the given Command
 				}
 				catch (KeyNotFoundException)
 				{
-					AnswerCall(msg, "\nUnknown Command '" + CmdIndicator + label + "'");
+					AnswerCall(msg, $"\nUnknown Command '{CmdIndicator}{label}'");
 					return;
 				}
 
@@ -72,17 +72,16 @@ namespace TS3GameBot.CommandStuff
 					return;
 				}
 
-				if (cmd.NeedsRegister)
+				using (PersonDb db = new PersonDb())
 				{
-					CasinoPlayer dbPlayer = DbInterface.GetPlayer(msg.InvokerId);
-					if (dbPlayer == null)
+					if(cmd.NeedsRegister && !DbInterface.IsRegistered(msg.InvokerUid, db).GetAwaiter().GetResult())
 					{
 						AnswerCall(msg, Responses.NotRegistered);
 						return;
 					}
-				}
-
-				cmd.Execute(args, msg);
+					cmd.Execute(args, msg, db);
+					return;
+				}			
 
 			}
 		}
@@ -108,7 +107,7 @@ namespace TS3GameBot.CommandStuff
 
 		public static String ClientUrl(String uid, String name)
 		{
-			return "[URL=client://0/" + uid + "]" + name + "[/URL]";
+			return $"[URL=client://0/{uid}]{name}[/URL]";
 		}
 
 	}

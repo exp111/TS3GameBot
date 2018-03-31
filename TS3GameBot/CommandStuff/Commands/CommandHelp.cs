@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TeamSpeak3QueryApi.Net.Specialized.Notifications;
 using TeamSpeak3QueryApi.Net.Specialized.Responses;
+using TS3GameBot.DBStuff;
 
 namespace TS3GameBot.CommandStuff.Commands
 {
@@ -13,7 +14,7 @@ namespace TS3GameBot.CommandStuff.Commands
 			this.Usage = "< command >";
 		}
 
-		public override bool Execute(List<String> args, TextMessage message)
+		internal override bool Execute(List<string> args, TextMessage message, PersonDb db)
 		{
 			StringBuilder outputMessage = new StringBuilder();
 

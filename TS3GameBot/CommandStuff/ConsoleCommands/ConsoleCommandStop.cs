@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TeamSpeak3QueryApi.Net.Specialized.Notifications;
 using TS3GameBot.CommandStuff.Commands;
+using TS3GameBot.DBStuff;
 
 namespace TS3GameBot.CommandStuff.ConsoleCommands
 {
@@ -13,7 +14,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 			this.Usage = "";
 		}
 
-		public override CCR Execute(List<string> args)
+		internal override CCR Execute(List<string> args, PersonDb db)
 		{
 			Console.WriteLine("Stopping Bot");
 			Program.Running = false;

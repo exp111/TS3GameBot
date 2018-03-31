@@ -13,51 +13,155 @@ using TS3GameBot.CommandStuff.Commands;
 using TS3GameBot.DBStuff;
 using TS3GameBot.Utils;
 using Newtonsoft.Json;
+using TS3GameBot.Utils.Settings;
 
 namespace TS3GameBot
 {
 	class Program
 	{
+		public enum ConnectionResult
+		{
+			UNKNOWN = -1,
+			OK = 0,
+			SOCKET = 1,
+			QUERY = 2,
+			SQLERROR = 3
+		}
+
 		public static IReadOnlyList<GetClientsInfo> CurrentClients { get; private set; }
 
 		public Queue<String> ConsoleQueue { get; } = new Queue<string>();
 
 		public static bool Running = true;
-
-		private static String CredPathBin { get; } = "Credentials.bin";
-
+		
 		private static String CredPathJson { get; } = "Credentials.json";
 
 		public static Creds MyCreds { get; private set; }
 
 		static void Main(string[] args)
 		{
-			Console.Title = "Shit 2k18";
+			Console.Title = "TS3GameBot by MrDj and Exp111";
 			Console.BackgroundColor = ConsoleColor.Black;
 			Console.ForegroundColor = ConsoleColor.Green;
 
-			if (!CredManager.CredCheck(CredPathBin))
+			#region CredCheck
+
+			if (!CredManager.CredCheck(CredPathJson))
 			{
 				MyCreds = CredManager.CreateCreds();
-				BinarySerialization.WriteToBinaryFile<Creds>(CredPathBin, MyCreds);
 				JsonSerialization.WriteToJsonFile<Creds>(CredPathJson, MyCreds);
 			}
 			else
 			{
-				MyCreds = BinarySerialization.ReadFromBinaryFile<Creds>(CredPathBin);
+				MyCreds = JsonSerialization.ReadFromJsonFile<Creds>(CredPathJson);
 				if(MyCreds == null)
 				{
 					throw new Exception("shit");
 				}
 			}
 
+			#endregion
+
 			Console.Clear();
-			Console.WriteLine("Connecting to Database..."); 
+
+			#region DBConnection
+			Console.WriteLine("Connecting to Database...");
+			ConnectionResult CResult = DbInterface.CheckConnection();
+			switch (CResult)
+			{
+				case ConnectionResult.OK:
+					Console.WriteLine("Connected!");
+					break;
+				case ConnectionResult.SQLERROR:
+					Console.BackgroundColor = ConsoleColor.Red;
+					Console.ForegroundColor = ConsoleColor.White;
+					Console.WriteLine("\nCould not connect to Database! Error: " + CResult + " Check your Settings! (" + CredPathJson + ")\n\nPress Enter to exit");
+					while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+					Console.BackgroundColor = ConsoleColor.Black;
+					Console.ForegroundColor = ConsoleColor.Green;
+					return;
+				//	break;
+
+				case ConnectionResult.UNKNOWN:
+				default:
+					Console.BackgroundColor = ConsoleColor.Red;
+					Console.ForegroundColor = ConsoleColor.White;
+					Console.WriteLine("\nCould not connect to Database! Error: " + CResult + "\n\nPress Enter to exit");
+					while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+					Console.BackgroundColor = ConsoleColor.Black;
+					Console.ForegroundColor = ConsoleColor.Green;
+					return;
+					//	break;
+			}
 			Console.WriteLine(DbInterface.GetPlayerCount() + " Players found!");// Making an Initial DB call, to get rid of the Delay on the first Commnand
 
-			ConsoleCommandManager.RegisterCommands();
+			#endregion
+
+			#region TS3Connection
+			Console.WriteLine("Connecting to TeamSpeak Server...");
+
+			TS3QueryInfo ts3ServerInfo;
+			if (MyCreds.TS3InfoList.Count > 1)
+			{
+				Console.WriteLine("You have more than 1 TS3 Server configured!\nPlease choose 1 of the following:\n");
+				foreach (var item in MyCreds.TS3InfoList)
+				{
+					Console.WriteLine("[" + item.Key + "] on " + item.Value.ServerAddress);
+				}
+				Console.Write("> ");
+				String input = Console.ReadLine();
+				ts3ServerInfo = MyCreds.TS3InfoList.Where(e => e.Key.ToLower().Equals(input.ToLower())).FirstOrDefault().Value;
+				while (ts3ServerInfo == null)
+				{
+					Console.WriteLine("Not found. Try Again!");
+					Console.Write("> ");
+					ts3ServerInfo = MyCreds.TS3InfoList.Where(e => e.Key.ToLower().Equals(Console.ReadLine().ToLower())).First().Value;
+				}
+			}
+			else
+			{
+				ts3ServerInfo = MyCreds.TS3InfoList.First().Value;
+			}
+
+			switch (GameBot.Instance.Login(ts3ServerInfo).GetAwaiter().GetResult())
+			{						
+				case ConnectionResult.OK:
+					Console.WriteLine("Connected!");
+					break;
+				case ConnectionResult.SOCKET:
+					Console.BackgroundColor = ConsoleColor.Red;
+					Console.ForegroundColor = ConsoleColor.White;
+					Console.WriteLine("\nCould not connect to TeamSpeak Server! Is the Server offline?\n\nPress Enter to exit");
+					while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+					return;
+				//	break;
+				case ConnectionResult.QUERY:
+					Console.BackgroundColor = ConsoleColor.Red;
+					Console.ForegroundColor = ConsoleColor.White;
+					Console.WriteLine("\nPlease Enter the correct Login Credentials! (" + CredPathJson + ")\n\nPress Enter to exit");
+					while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+					return;
+				//	break;
+
+				case ConnectionResult.UNKNOWN:
+				default:
+					Console.BackgroundColor = ConsoleColor.Red;
+					Console.ForegroundColor = ConsoleColor.White;
+					Console.WriteLine("\nCould not connect to TeamSpeak Server!\n\nPress Enter to exit");
+					while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+					return;
+				//	break;
+			}
+			#endregion			
+
+			#region ThreadStuff
 			Thread botThread = new Thread(RunBot);
-			botThread.Start(1);
+			botThread.Start();
+			#endregion
+
+
+
+			ConsoleCommandManager.RegisterCommands(); // Registering all Console Commands
 
 			List<String> commandArgs = new List<string>();
 			Console.WriteLine("Welcome to Dj's GameBot!\nUse 'help' for a list of commands.\nUse 'help <command>' for Usage of given Command.");
@@ -66,7 +170,7 @@ namespace TS3GameBot
 			{								
 				Console.Write("> ");
 				commandArgs.Clear();
-				String shit = Console.ReadLine();
+				String shit = Console.ReadLine().Trim();
 				ConsoleCommandBase cmd;
 
 				String[] parts = shit.Split(" ");
@@ -75,14 +179,16 @@ namespace TS3GameBot
 				{
 					commandArgs.Add(parts[i]); // Putin all the args in a List 
 				}
+
 				try
 				{
-					cmd = ConsoleCommandManager.Commands[parts[0].ToLower()]; // Getting the Command Assoscccscsiated to the give Command			
+					cmd = ConsoleCommandManager.Commands[parts[0].ToLower()]; // Getting the Command Assosciated to the give Command			
+					
+					CCR result = ConsoleCommandManager.ExecuteCommand(cmd, commandArgs); // Tempsaving the Result 
 
-					CCR result = cmd.Execute(commandArgs);
+					#region ErrorHandling for Console Commands
 					switch (result)
-					{
-						
+					{						
 						case CCR.OK:
 							break;
 						case CCR.WRONGPARAM:
@@ -115,9 +221,9 @@ namespace TS3GameBot
 							Console.ForegroundColor = ConsoleColor.Green;
 							break;
 					}
-
+					#endregion
 				}
-				catch (KeyNotFoundException)
+				catch (KeyNotFoundException) // If the given command is not found withing the Commands Dictionary
 				{
 					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine("Unknown Command '" + shit.Split(" ")[0] + "'!");
@@ -125,14 +231,22 @@ namespace TS3GameBot
 					Console.Beep();
 				}
 			}
+			// Changing the Color back to normal
+			Console.BackgroundColor = ConsoleColor.Black;
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.Clear(); // Clearing the Console
+			// Waiting for the Bot Thread to finish
+			while (!botThread.IsAlive)
+			{
+				Console.WriteLine("Waiting for Bot Thread to finish!");
+			}
 		}
 
-		public static void RunBot(object sid)
+		public static void RunBot()
 		{
 			GameBot myBot = GameBot.Instance;
-
-			myBot.Login(MyCreds.TS3User, MyCreds.TS3Pass).Wait();
-			myBot.StartBot((int)sid).Wait();
+					
+			myBot.StartBot(myBot.VServerID).Wait();
 
 			myBot.EventShit();
 			CommandStuff.CommandManager.RegisterCommands();

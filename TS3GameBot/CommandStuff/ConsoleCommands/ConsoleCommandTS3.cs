@@ -15,7 +15,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 			this.Usage = "[Users per Page] [Page]";
 		}
 
-		public override CCR Execute(List<string> args)
+		internal override CCR Execute(List<string> args, PersonDb db)
 		{
 			int page = 1;
 			int perPage = 10;
@@ -43,11 +43,11 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 
 			if (page > pageCount)
 			{
-				outMessage.Append("There are only " + pageCount + " pages!");
+				outMessage.Append($"There are only {pageCount} pages!");
 			}
 			else
 			{
-				outMessage.Append("Total Players: " + playerCount + "\nPage (" + page + "/" + pageCount + ")\n");
+				outMessage.Append($"Total Players: {playerCount}\nPage ({page}/{pageCount})\n");
 
 				List<GetClientsInfo> shit = Program.CurrentClients.ToList();
 				outMessage.AppendFormat("{0, -15} | {1, -15} | {2, -28} | {3, -15}\n\n", "Name", "DdId", "uid", "SteamID64");

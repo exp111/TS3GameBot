@@ -6,21 +6,32 @@ using TS3GameBot.DBStuff;
 
 namespace TS3GameBot.CommandStuff.Commands
 {
-	class CommandRegister : CommandBase
+	class ConsoleCommandAdd : ConsoleCommandBase
 	{
-		public CommandRegister(string label, string description) : base(label, description)
+		public ConsoleCommandAdd(string label, string description) : base(label, description)
 		{
-			this.Usage = "[ SteamID64 ]";
-			this.NeedsRegister = false;
+			this.Usage = "<uid> <name> [steamid] [points]";
 		}
-
-		internal override bool Execute(List<string> args, TextMessage message, PersonDb db)
+		internal override CCR Execute(List<string> args, PersonDb db)
 		{
+			if (args.Count < 2)
+			{
+				return CCR.INVALIDPARAM;
+			}
+
+			int points = 0;
+			if (args.Count > 3)
+			{
+				if (!Int32.TryParse(args[3], out points))
+				{
+					return CCR.NOTANUMBER;
+				}
+			}
+
+			//Most checks are in addplayer function
+			Error result = DbInterface.AddPlayer(args[0], args[1], db, args.Count > 2 ? args[2] : "", points);
+
 			StringBuilder outMessage = new StringBuilder();
-			Error result = DbInterface.AddPlayer(message.InvokerUid, message.InvokerName, db, args.Count > 0 ? args[0] : "");
-
-			outMessage.Append("\n");
-
 			switch (result)
 			{
 				case Error.OK:
@@ -40,9 +51,9 @@ namespace TS3GameBot.CommandStuff.Commands
 					outMessage.Append("An Unknown Error Occured");
 					break;
 			}
-			CommandManager.AnswerCall(message, outMessage.ToString());
+			Console.Write(outMessage);
 
-			return false;
+			return CCR.OK;
 		}
 	}
 }

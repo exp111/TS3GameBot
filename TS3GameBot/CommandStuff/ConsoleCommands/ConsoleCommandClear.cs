@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using TS3GameBot.CommandStuff.Commands;
+using TS3GameBot.DBStuff;
 
 namespace TS3GameBot.CommandStuff.ConsoleCommands
 {
@@ -11,7 +12,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 		{
 		}
 
-		public override CCR Execute(List<string> args)
+		internal override CCR Execute(List<string> args, PersonDb db)
 		{
 			Console.Clear();
 			return CCR.OK;

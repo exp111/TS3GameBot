@@ -12,17 +12,16 @@ namespace TS3GameBot.CommandStuff.Commands
 		public CommandWallet(string label, string description) : base(label, description)
 		{
 			this.Usage = "";
-			this.NeedsRegister = true;
 		}
 
-		public override bool Execute(List<string> args, TextMessage message)
+		internal override bool Execute(List<string> args, TextMessage message, PersonDb db)
 		{
 			StringBuilder outMessage = new StringBuilder();
 
-			CasinoPlayer player = DbInterface.GetPlayer(message.InvokerUid);
+			CasinoPlayer tempPlayer = DbInterface.GetPlayer(message.InvokerUid, db);
 
 			outMessage.Append("\n").
-				Append(CommandManager.ClientUrl(player.Id, player.Name) + ": You have " + player.Points + " in your Wallet!");
+				Append($"{CommandManager.ClientUrl(tempPlayer.Id, tempPlayer.Name)}: You have {tempPlayer.Points} in your Wallet!");
 
 			return CommandManager.AnswerCall(message, outMessage.ToString());
 		}

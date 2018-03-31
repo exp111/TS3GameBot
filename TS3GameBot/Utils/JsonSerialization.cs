@@ -28,7 +28,7 @@ namespace TS3GameBot.Utils
 		{
 			using (TextWriter writer = new StreamWriter(filePath, append))
 			{
-				var contentsToWriteToFile = Newtonsoft.Json.JsonConvert.SerializeObject(objectToWrite);
+				var contentsToWriteToFile = Newtonsoft.Json.JsonConvert.SerializeObject(objectToWrite, Newtonsoft.Json.Formatting.Indented);
 				writer.Write(contentsToWriteToFile);
 				if (writer != null)
 				{
