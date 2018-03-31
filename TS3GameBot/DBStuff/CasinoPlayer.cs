@@ -15,5 +15,6 @@ namespace TS3GameBot.DBStuff
 		public String SteamID64 { get; set; }
 
 		public DateTime LastDaily { get; set; }
+		public String Inventory { get; set; }
 	}
 }

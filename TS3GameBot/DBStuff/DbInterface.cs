@@ -164,5 +164,14 @@ namespace TS3GameBot.DBStuff
 			player.Points = amount;
 			return true;
 		}
+
+		public static bool GiveItem(CasinoPlayer player, String itemID)
+		{
+			StringBuilder inv = new StringBuilder(player.Inventory);
+			inv.Append($"{itemID};");
+			player.Inventory = inv.ToString();
+
+			return true;
+		}
 	}
 }

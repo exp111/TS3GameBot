@@ -12,12 +12,14 @@ namespace TS3GameBot.CommandStuff.Commands
 		public string Name { get; }
 		public string Description { get; }
 		public int Price { get; }
+		public string ID { get; }
 
-		public Item(string Name, string Description, int Price)
+		public Item(string Name, string Description, int Price, string ID)
 		{
 			this.Name = Name;
 			this.Description = Description;
 			this.Price = Price;
+			this.ID = ID;
 		}
 	};
 
@@ -30,7 +32,7 @@ namespace TS3GameBot.CommandStuff.Commands
 			this.Usage = "<list | buy> [item]";
 			this.NeedsRegister = true;
 
-			items.Add(new Item("Test", "This is a description", 5));
+			items.Add(new Item("Test", "This is a description", 5, "test_item"));
 		}
 
 		public override bool Execute(List<string> args, TextMessage message)
@@ -64,6 +66,7 @@ namespace TS3GameBot.CommandStuff.Commands
 						CommandManager.AnswerCall(message, "Shitty mcshitfuck");
 						throw new Exception("Shitty mcschit fuck again");
 					}
+					DbInterface.GiveItem(invoker, item.ID);
 					DbInterface.SaveChanges();
 					
 					//Tell the peepz about their item
