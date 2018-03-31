@@ -72,7 +72,7 @@ namespace TS3GameBot.CommandStuff.Commands
 					 (secondNum == MagicNumber && thirdNum == MagicNumber)) //medium 
 			{
 				outMessage.Append("\nYou've won a neato price!\n");
-				price = Cost + 5;
+				price = Cost * 2;
 			}
 			else if (firstNum == MagicNumber || secondNum == MagicNumber || thirdNum == MagicNumber)
 			{//better than nothing amirite
