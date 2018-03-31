@@ -11,7 +11,7 @@ namespace TS3GameBot.CommandStuff.Commands
 	{
 		public int Cost { get; } = 10;
 		public int MagicNumber { get; } = 6;
-		public String JackpotID { get; } = "JackPot="; //some fake id so no client is actually the jackpot
+		public String JackpotID { get; } = "Jackpot="; //some fake id so no client is actually the jackpot
 
 		public CommandSpin(string label, string description) : base(label, description)
 		{
