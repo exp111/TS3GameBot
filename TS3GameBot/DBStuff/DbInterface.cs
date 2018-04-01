@@ -234,5 +234,14 @@ namespace TS3GameBot.DBStuff
 
 			return Error.OK;
 		}
+
+		public static bool GiveItem(CasinoPlayer player, String itemID)
+		{
+			StringBuilder inv = new StringBuilder(player.Inventory);
+			inv.Append(inv.Length > 0 ? $";{itemID}" : $"{itemID}");
+			player.Inventory = inv.ToString();
+
+			return true;
+		}
 	}
 }
