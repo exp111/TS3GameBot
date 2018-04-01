@@ -16,6 +16,7 @@ namespace TS3GameBot.CommandStuff.Commands
 		public CommandTransfer(string label, string description) : base(label, description)
 		{
 			this.Usage = "<target> <amount>";
+			this.NeedsRegister = true;
 		}
 
 		internal override bool Execute(List<string> args, TextMessage message, PersonDb db)
@@ -33,7 +34,7 @@ namespace TS3GameBot.CommandStuff.Commands
 			}
 			if(amount <= 0) //Number not positive => frick off
 			{
-				CommandManager.AnswerCall(message, $"{Utils.Utils.ApplyColor(Color.Red)}\nNumber must be positive![S](smartass, huh?)[/S][/COLOR]");
+				CommandManager.AnswerCall(message, Responses.NegativeNumber);
 				return false;
 			}
 
@@ -55,7 +56,7 @@ namespace TS3GameBot.CommandStuff.Commands
 
 			if (invoker.Points < amount) //Not enough points
 			{
-				CommandManager.AnswerCall(message, $"{Utils.Utils.ApplyColor(Color.Red)}\nNot enough Points in your Wallet![S](get fucked)[/S][/COLOR]");
+				CommandManager.AnswerCall(message, Responses.NotEnoughPoints);
 				return false;
 			}
 
