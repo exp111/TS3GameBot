@@ -48,10 +48,10 @@ namespace TS3GameBot.CommandStuff.Commands
 					break;
 				case Error.UNKNOWN:
 				default:
-					outMessage.Append("An Unknown Error Occured");
+					outMessage.Append("An Unknown Error Occured!");
 					break;
 			}
-			Console.Write(outMessage);
+			Console.WriteLine(outMessage.ToString());
 
 			return CCR.OK;
 		}

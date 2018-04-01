@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using TeamSpeak3QueryApi.Net.Specialized.Notifications;
 using TS3GameBot.CommandStuff.Commands;
@@ -10,6 +11,8 @@ namespace TS3GameBot.CommandStuff
 	static class Responses
 	{
 		public static String NotRegistered { get; } = "\nYou are not registered yet!\nUse " + CommandManager.CmdIndicator + CommandManager.Commands["register"].Label + " to register yourshelf.";
+		public static String NotEnoughPoints { get; } = $"{Utils.Utils.ApplyColor(Color.Red)}\nNot enough Points in your Wallet![S](get fucked)[/S][/COLOR]";
+		public static String NegativeNumber { get; } = $"{Utils.Utils.ApplyColor(Color.Red)}\nNumber must be positive![S](smartass, huh?)[/S][/COLOR]";
 	}
 
 	static class CommandManager
@@ -27,6 +30,8 @@ namespace TS3GameBot.CommandStuff
 			RegisterCommand(new CommandWallet("wallet", "Get the amount of cash you have"));
 			RegisterCommand(new CommandTransfer("transfer", "Transfer your money 2 peepz"));
 			RegisterCommand(new CommandSpin("spin", "Get your game on"));
+			RegisterCommand(new CommandSpin("flip", "Navia aut caput"));
+			RegisterCommand(new CommandJackpot("jackpot", "Show the current Jackpot"));
 		}
 
 		private static void RegisterCommand(CommandBase command)

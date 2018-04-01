@@ -30,21 +30,21 @@ namespace TS3GameBot.Utils
 
 			msg.Clear().
 				Append("\nHello, we will now create your Credentials together!").
-				Append("\n\nPlease Enter your DataBase Name").
+				Append("\n\nPlease Enter your Database Name").
 				Append("\n> ");
 
 			Console.Write(msg);
 			creds["DBName"] = Console.ReadLine();
 
 			msg.Clear().
-				Append("\n\nPlease Enter your DataBase Username").
+				Append("\n\nPlease Enter your Database Username").
 				Append("\n> ");
 
 			Console.Write(msg);
 			creds["DBUser"] = Console.ReadLine();
 
 			msg.Clear().
-				Append("\n\nPlease Enter your DataBase Password").
+				Append("\n\nPlease Enter your Database Password").
 				Append("\n> ");
 
 			Console.Write(msg);
@@ -80,6 +80,13 @@ namespace TS3GameBot.Utils
 
 			Console.Write(msg);
 			creds["TS3Server"] = Console.ReadLine();
+
+			msg.Clear().
+				Append("\n\nPlease Enter your VirtualServerID (default = 1)").
+				Append("\n> ");
+
+			Console.Write(msg);
+			creds["VirtualServerID"] = Console.ReadLine();
 
 			msg.Clear().
 				Append("\n\nPlease Enter your TS3Query Username").

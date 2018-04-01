@@ -46,7 +46,7 @@ namespace TS3GameBot.CommandStuff.ConsoleCommands
 					AppendFormat("{0, -15} | {1, -15} | {2, -28} | {3, -15}\n", player.Name, player.Points, player.Id, player.SteamID64);
 			}
 
-			Console.Write(outMessage);
+			Console.WriteLine(outMessage);
 
 			return CCR.OK;
 		}

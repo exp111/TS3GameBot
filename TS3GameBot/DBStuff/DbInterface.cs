@@ -117,7 +117,7 @@ namespace TS3GameBot.DBStuff
 			return ConnectionResult.OK;
 		}
 
-		public static List<CasinoPlayer> GetPlayerList(int index = 0, int endIndex = 0, String name = "N/A", bool fuzzy = false)
+		public static List<CasinoPlayer> GetPlayerList(int index = 0, int endIndex = 0, String name = "N/A", bool fuzzy = false, bool hide = true)
 		{
 			using (PersonDb db = new PersonDb())
 			{
@@ -132,18 +132,25 @@ namespace TS3GameBot.DBStuff
 
 					for (int i = index; i < (endIndex >= 1 ? endIndex : db.Players.Count()); i++)
 					{
-						playerList.Add(shittyList[i]);
+						if (shittyList[i].Id.Length == 28 || !hide)
+							playerList.Add(shittyList[i]);
 					}
 
 					return playerList;
 				}
 				else if(!fuzzy)
 				{
-					return db.Players.Where(p => p.Name.Equals(name)).ToList();
+					if (hide)
+						return db.Players.Where(p => p.Name.Equals(name) && p.Id.Length == 28).ToList();
+					else
+						return db.Players.Where(p => p.Name.Equals(name)).ToList();
 				}
 				else
 				{
-					return db.Players.Where(p => p.Name.Contains(name)).ToList();
+					if (hide)
+						return db.Players.Where(p => p.Name.Contains(name) && p.Id.Length == 28).ToList();
+					else
+						return db.Players.Where(p => p.Name.Contains(name)).ToList();
 				}
 			}
 		}

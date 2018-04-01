@@ -27,7 +27,7 @@ namespace TS3GameBot.Utils.Settings
 				DBLoginpass = creds["DBPass"];
 
 				TS3InfoList.
-					Add(creds["TS3CustomName"], new TS3QueryInfo() { ServerAddress = creds["TS3Server"], TS3LoginName = creds["TS3User"], TS3LoginPass = creds["TS3Pass"] });
+					Add(creds["TS3CustomName"], new TS3QueryInfo() { ServerAddress = creds["TS3Server"], VirtualServerID = Int32.Parse(creds["VirtualServerID"]), TS3LoginName = creds["TS3User"], TS3LoginPass = creds["TS3Pass"] });
 			}
 			catch (Exception)
 			{
